@@ -24,8 +24,7 @@ history of calculation breakdown and root approximations
 |e<sup>x</sup> - 3x|x=1.09, x=1.1, x=1.11|
 
 ## Table 2: Numerical Methods to be implemented
-|Numerical Method|Data structure to store *x*<sub>i</sub>, 
-*f*(*x*<sub>i</sub>), *f*’(*x*<sub>i</sub>)|
+|Numerical Method|Data structure to store *x*<sub>i</sub>, *f*(*x*<sub>i</sub>), *f*’(*x*<sub>i</sub>)|
 |--|--|
 |Newton-Raphson|Linked list|
 |Secant|Array|
