@@ -1,24 +1,37 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package RootFinder.Functions;
 
 /**
+ * Implementation of the function f(x) = ln(x+1) + 1
  *
  * @author Abdullah
  */
 public class Logarithm extends Function {
     
+    /**
+     * Constructor with default length
+     *
+     * @param useArray Set to true to use Array, false for LinkedList
+     */
     public Logarithm(boolean useArray) {
         this(useArray, 40);
     }
 
+    /**
+     * Constructor with custom length
+     *
+     * @param useArray Set to true to use Array, false for LinkedList
+     * @param length Number of x values, larger will generate a more accurate graph
+     */
     public Logarithm(boolean useArray, int length) {
         super(useArray, length, -0.99999);
     }
 
+    /**
+     * This is the f(x) function.
+     * 
+     * @param x The x value
+     * @return y value
+     */
     @Override
     double computeY(double x) {
         return Math.log(x + 1) + 1;
