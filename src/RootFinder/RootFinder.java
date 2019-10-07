@@ -28,6 +28,6 @@ public class RootFinder {
         chart.addSeries("Quadratic", new Quadratic(true).getX(), new Quadratic(true).getY()).setMarker(SeriesMarkers.NONE);
         chart.addSeries("Logarithm", new Logarithm(true).getX(), new Logarithm(true).getY()).setMarker(SeriesMarkers.NONE);
         chart.addSeries("Euler", new Euler(true).getX(), new Euler(true).getY()).setMarker(SeriesMarkers.NONE);
-        new SwingWrapper(chart).displayChart();
+        new SwingWrapper<>(chart).displayChart();
     }
 }
