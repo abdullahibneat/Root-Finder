@@ -40,10 +40,10 @@ abstract class Function {
             x_array = null;
             y_array = null;
         }
-        populateArrays(length);
+        populateValues(length);
     }
     
-    private void populateArrays(int length) {
+    private void populateValues(int length) {
         
         if(useArray) {
             int index = 0;
