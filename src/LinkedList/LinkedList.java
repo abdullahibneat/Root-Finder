@@ -7,6 +7,7 @@ package LinkedList;
  */
 public class LinkedList {
     private final DoubleNode head;
+    private DoubleNode tail; // Keep track of the tail
 
     /**
      * Current length of this list
@@ -31,17 +32,11 @@ public class LinkedList {
         
         // If this is the first element
         if(head.getNext() == null) {
-            head.setNext(new DoubleNode(e, null));
+            tail = new DoubleNode(e, null);
+            head.setNext(tail);
         } else {
-            DoubleNode tail = head;
-
-            // Find the last element of the list
-            while(tail.getNext() != null) {
-                tail = tail.getNext();
-            }
-
-            // Add the new element to the end of the list
             tail.setNext(new DoubleNode(e, null));
+            tail = tail.getNext();
         }
         
         // Increase length of the list by 1
@@ -57,10 +52,10 @@ public class LinkedList {
     public String toString() {
         String out = "";
         
-        DoubleNode tail = head;
-        while(tail.getNext() != null) {
-            tail = tail.getNext();
-            out += tail.getElement() + ", ";
+        DoubleNode node = head;
+        while(node.getNext() != null) {
+            node = node.getNext();
+            out += node.getElement() + ", ";
         }
         
         // Substring removes the ", " from the end of the string
