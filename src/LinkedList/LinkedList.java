@@ -46,4 +46,17 @@ public class LinkedList {
         
         return "{ " + out.substring(0, out.length()-2) + " }";
     }
+    
+    public double[] toDoubleArray() {
+        double[] out = new double[length];
+        
+        DoubleNode tail = head;
+        
+        for (int i = 0; i < length; i++) {
+            tail = tail.getNext();
+            out[i] = tail.getElement();
+        }
+        
+        return out;
+    }
 }

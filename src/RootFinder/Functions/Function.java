@@ -65,7 +65,19 @@ abstract class Function {
     
     abstract double computeY(double x);
     
-    public double[] getX() { return x_array; }
+    public double[] getX() {
+        if(useArray) {
+            return x_array;
+        } else {
+            return x_list.toDoubleArray();
+        }
+    }
     
-    public double[] getY() { return y_array; }
+    public double[] getY() {
+        if(useArray) {
+            return y_array;
+        } else {
+            return y_list.toDoubleArray();
+        }
+    }
 }
