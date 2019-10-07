@@ -11,12 +11,12 @@ package RootFinder.Functions;
  */
 public class Quadratic extends Function {
     
-    public Quadratic() {
-        this(10);
+    public Quadratic(boolean useArray) {
+        this(useArray, 10);
     }
 
-    public Quadratic(int length) {
-        super(length, -length/2 + 1);
+    public Quadratic(boolean useArray, int length) {
+        super(useArray, length, -length/2 + 1);
     }
 
     @Override

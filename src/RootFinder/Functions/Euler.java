@@ -11,12 +11,12 @@ package RootFinder.Functions;
  */
 public class Euler extends Function {
     
-    public Euler() {
-        this(10);
+    public Euler(boolean useArray) {
+        this(useArray, 10);
     }
 
-    public Euler(int length) {
-        super(length, -length/2);
+    public Euler(boolean useArray, int length) {
+        super(useArray, length, -length/2);
     }
 
     @Override

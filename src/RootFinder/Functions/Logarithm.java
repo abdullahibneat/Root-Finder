@@ -11,12 +11,12 @@ package RootFinder.Functions;
  */
 public class Logarithm extends Function {
     
-    public Logarithm() {
-        this(40);
+    public Logarithm(boolean useArray) {
+        this(useArray, 40);
     }
 
-    public Logarithm(int length) {
-        super(length, -0.99999);
+    public Logarithm(boolean useArray, int length) {
+        super(useArray, length, -0.99999);
     }
 
     @Override

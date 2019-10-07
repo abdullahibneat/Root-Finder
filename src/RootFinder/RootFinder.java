@@ -25,9 +25,9 @@ public class RootFinder {
     public RootFinder() {
         XYChart chart = new XYChartBuilder().width(600).height(500).build();
         
-        chart.addSeries("Quadratic", new Quadratic().getX(), new Quadratic().getY()).setMarker(SeriesMarkers.NONE);
-        chart.addSeries("Logarithm", new Logarithm().getX(), new Logarithm().getY()).setMarker(SeriesMarkers.NONE);
-        chart.addSeries("Euler", new Euler().getX(), new Euler().getY()).setMarker(SeriesMarkers.NONE);
+        chart.addSeries("Quadratic", new Quadratic(true).getX(), new Quadratic(true).getY()).setMarker(SeriesMarkers.NONE);
+        chart.addSeries("Logarithm", new Logarithm(true).getX(), new Logarithm(true).getY()).setMarker(SeriesMarkers.NONE);
+        chart.addSeries("Euler", new Euler(true).getX(), new Euler(true).getY()).setMarker(SeriesMarkers.NONE);
         new SwingWrapper(chart).displayChart();
     }
 }
