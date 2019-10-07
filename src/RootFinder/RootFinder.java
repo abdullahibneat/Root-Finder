@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package RootFinder;
 
 import RootFinder.Functions.Euler;
@@ -14,6 +9,7 @@ import org.knowm.xchart.XYChartBuilder;
 import org.knowm.xchart.style.markers.SeriesMarkers;
 
 /**
+ * Main class
  *
  * @author Abdullah
  */
@@ -23,11 +19,22 @@ public class RootFinder {
     }
     
     public RootFinder() {
+        demoCharts();
+    }
+    
+    /**
+     * Sample charts to test the XChart library
+     */
+    private void demoCharts() {
         XYChart chart = new XYChartBuilder().width(600).height(500).build();
         
-        chart.addSeries("Quadratic", new Quadratic(true).getX(), new Quadratic(true).getY()).setMarker(SeriesMarkers.NONE);
-        chart.addSeries("Logarithm", new Logarithm(true).getX(), new Logarithm(true).getY()).setMarker(SeriesMarkers.NONE);
-        chart.addSeries("Euler", new Euler(true).getX(), new Euler(true).getY()).setMarker(SeriesMarkers.NONE);
+        Quadratic quadratic = new Quadratic(true);
+        Logarithm logarithm = new Logarithm(true);
+        Euler euler = new Euler(true);
+        
+        chart.addSeries("Quadratic", quadratic.getX(), quadratic.getY()).setMarker(SeriesMarkers.NONE);
+        chart.addSeries("Logarithm", logarithm.getX(), logarithm.getY()).setMarker(SeriesMarkers.NONE);
+        chart.addSeries("Euler", euler.getX(), euler.getY()).setMarker(SeriesMarkers.NONE);
         new SwingWrapper<>(chart).displayChart();
     }
 }
