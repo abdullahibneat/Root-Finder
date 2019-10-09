@@ -45,7 +45,7 @@ public class RootFinder extends JFrame implements ActionListener {
     private XChartPanel<XYChart> chartPanel; // Chart panel
     
     private final DefaultTableModel tableData = new DefaultTableModel();
-    private JTable table = new JTable(tableData);
+    private final JTable table = new JTable(tableData);
     
     public static void main(String[] args) {
         RootFinder rootFinder = new RootFinder();
