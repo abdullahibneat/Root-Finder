@@ -37,7 +37,7 @@ import org.knowm.xchart.style.markers.SeriesMarkers;
  */
 public class RootFinder extends JFrame implements ActionListener {
     
-    private JComboBox functionsDropdown; // Dropdown of functions
+    private JComboBox<String> functionsDropdown; // Dropdown of functions
     private final String[] functionsAvailableLabels = {"f(x) = x - x^2", "f(x) = ln(x+1) + 1", "f(x) = e^x - 3x"}; // Functions in JComboBox
     private final String[] functionsAvailableTags = {"quadratic", "logarithm", "euler"}; // Map above functions to recognizable tag
     private ArrayList<JCheckBox> numericalMethodsBtnGroup; // List of checkboxes for numerical methods
@@ -79,7 +79,7 @@ public class RootFinder extends JFrame implements ActionListener {
         pnl.setLayout(new BoxLayout(pnl, BoxLayout.Y_AXIS));
         
         pnl.add(new JLabel("Select a function:"));
-        functionsDropdown = new JComboBox(functionsAvailableLabels);
+        functionsDropdown = new JComboBox<>(functionsAvailableLabels);
         functionsDropdown.addActionListener(this);
         functionsDropdown.setActionCommand("functionSelected");
         functionsDropdown.setMaximumSize(new Dimension(200, 25));
