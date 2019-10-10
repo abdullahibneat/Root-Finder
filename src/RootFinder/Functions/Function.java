@@ -7,7 +7,7 @@ import LinkedList.LinkedList;
  *
  * @author Abdullah
  */
-abstract class Function {
+public abstract class Function {
     
     // x, y values to store as array
     private final double[] x_array;
