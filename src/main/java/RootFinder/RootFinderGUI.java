@@ -27,6 +27,7 @@ import javax.swing.table.DefaultTableModel;
 import org.knowm.xchart.QuickChart;
 import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.XYChart;
+import org.knowm.xchart.internal.chartpart.SelectionZoom;
 
 /**
  *
@@ -144,6 +145,11 @@ public class RootFinderGUI extends JFrame implements ActionListener {
         JPanel rightPanel = new JPanel(new BorderLayout());
         
         chartPanel = new XChartPanel<>(chart);
+        
+        // Enable zooming in into the graph
+        SelectionZoom sz = new SelectionZoom();
+        sz.init(chartPanel);
+        
         rightPanel.add(chartPanel, BorderLayout.CENTER);
         
         return rightPanel;
