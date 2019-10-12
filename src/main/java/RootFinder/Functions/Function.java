@@ -23,20 +23,25 @@ public abstract class Function {
     // Offset x values to center the graph
     private final double offset;
     
+    // Increase the precision of the plot, making the graph more smooth
+    private final int precision;
+    
     /**
      * Constructor to initialise a function
      * 
      * @param useArray Set to true to use Array, false for LinkedList
      * @param length Number of x values, larger will generate a more accurate graph
      * @param offset Offset x values to center the graph
+     * @param precision Makes the graph smoother
      */
-    public Function(boolean useArray, int length, double offset) {
+    public Function(boolean useArray, int length, double offset, int precision) {
         this.offset = offset;
         this.useArray = useArray;
+        this.precision = precision;
         
         if(useArray) {
-            x_array = new double[length];
-            y_array = new double[length];
+            x_array = new double[length*precision];
+            y_array = new double[length*precision];
             
             x_list = null;
             y_list = null;
@@ -57,18 +62,15 @@ public abstract class Function {
      */
     private void populateValues(int length) {
         
-        if(useArray) {
-            int index = 0;
-            
-            for (int i = 0; i < length; i++) {
-                double x_value = i + offset;
+        int index = 0;
+        double step = (double)1 / precision;
+        
+        for (double i = 0; i < length; i+=step) {
+            double x_value = i + offset;
+            if(useArray) {
                 x_array[index] = x_value;
-                y_array[index] = computeY(x_value);
-                index++;
-            }
-        } else {
-            for (int i = 0; i < length; i++) {
-                double x_value = i + offset;
+                y_array[index++] = computeY(x_value);
+            } else {
                 x_list.add(x_value);
                 y_list.add(computeY(x_value));
             }

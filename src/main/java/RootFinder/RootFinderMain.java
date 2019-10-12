@@ -25,7 +25,7 @@ public class RootFinderMain {
     
     public RootFinderMain() {
         // Set up GUI
-        RootFinderGUI gui = new RootFinderGUI(functionsAvailableLabels, new Quadratic(true));
+        RootFinderGUI gui = new RootFinderGUI(functionsAvailableLabels, new Quadratic(false));
         
         // Update the chart when user changes function using dropdown menu
         gui.functionsDropdown.addActionListener((ActionEvent e) -> {

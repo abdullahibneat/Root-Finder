@@ -23,7 +23,19 @@ public class Logarithm extends Function {
      * @param length Number of x values, larger will generate a more accurate graph
      */
     public Logarithm(boolean useArray, int length) {
-        super(useArray, length, -0.99999);
+        super(useArray, length, -0.99999, 4);
+    }
+
+    /**
+     * Constructor with custom length and custom offset
+     *
+     * @param useArray Set to true to use Array, false for LinkedList
+     * @param length Number of x values, larger will generate a more accurate graph
+     * @param offset Move the graph horizontally according to this offset
+     * @param precision Increase this value to smoothen the graph
+     */
+    public Logarithm(boolean useArray, int length, double offset, int precision) {
+        super(useArray, length, offset, precision);
     }
 
     /**
