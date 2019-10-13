@@ -133,12 +133,16 @@ public class RootFinderGUI extends JFrame {
         // Add some dummy data
         tableData.addColumn("Column 1");
         tableData.addColumn("Column 2");
-        
-        tableData.addRow(new Object[] {"x0", "x1"});
+        initializeTable();
         
         container.add(table, BorderLayout.CENTER);
         
         return container;
+    }
+    
+    public void initializeTable() {
+        tableData.setRowCount(0);
+        tableData.addRow(new Object[] {"Iteration", "x"});
     }
     
     private JComponent rightPanel() {

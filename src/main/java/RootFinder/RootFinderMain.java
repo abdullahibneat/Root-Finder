@@ -1,5 +1,7 @@
 package RootFinder;
 
+import LinkedList.LinkedList;
+import RootFinder.Functions.Function;
 import RootFinder.Functions.Euler;
 import RootFinder.Functions.Logarithm;
 import RootFinder.Functions.Quadratic;
@@ -55,12 +57,34 @@ public class RootFinderMain {
         
         // "Find Root" button
         gui.findRootBtn.addActionListener(e -> {
-            // Testing if addTableRow works
-            gui.addTableRow(new String[] {gui.x0.getText() + ", " + gui.x1.getText(), gui.precision.getText()});
+            // Clear the table
+            gui.initializeTable();
+            
+            // Newton Raphson implementation
+            LinkedList nr = newtonRaphson(new Quadratic(false), Double.parseDouble(gui.x0.getText()), Double.parseDouble(gui.precision.getText()));
+            // Convert LinkedList to array so I can iterate
+            double[] nr_array = nr.toDoubleArray();
+            
+            // Add values to table
+            for (int i = 0; i < nr_array.length; i++) {
+                gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", nr_array[i]) });
+            }
+            
             gui.switchTab();
         });
     }
-
+    
+    public LinkedList newtonRaphson(Function f, double startPoint, double precision) {
+        LinkedList out = new LinkedList();
+        out.add(startPoint);
+        while(true) {
+            double lastX = out.getLastElement();
+            double nextX = lastX - (f.computeY(lastX) / f.computeYderivative(lastX));
+            if(lastX - nextX <= precision) break;
+            out.add(nextX);
+        }
+        return out;
+    }
     
     /**
      * Sample charts to test the XChart library
