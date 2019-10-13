@@ -9,8 +9,6 @@ import RootFinder.Functions.Function;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -33,18 +31,24 @@ import org.knowm.xchart.internal.chartpart.SelectionZoom;
  *
  * @author Abdullah
  */
-public class RootFinderGUI extends JFrame implements ActionListener {
+public class RootFinderGUI extends JFrame {
     
     public JComboBox<String> functionsDropdown; // Dropdown of functions
     private final String[] functionsAvailableLabels; // Functions in JComboBox
-    private ArrayList<JCheckBox> numericalMethodsBtnGroup; // List of checkboxes for numerical methods
+    public ArrayList<JCheckBox> numericalMethodsBtnGroup; // List of checkboxes for numerical methods
     
+    private final JTabbedPane leftPanel = new JTabbedPane(JTabbedPane.TOP); // Tabbed panel
     private final DefaultTableModel tableData = new DefaultTableModel();
     private final JTable table = new JTable(tableData);
     
     private Function function;
     private final XYChart chart; // Function plot
     private XChartPanel<XYChart> chartPanel; // Chart panel
+    
+    // User inputs
+    public JTextField x0 = new JTextField("", 4);
+    public JTextField x1 = new JTextField("", 4);
+    public JButton findRootBtn = new JButton("Find Root");
     
     public RootFinderGUI(String[] functionsAvailableLabels, Function function){
         this.functionsAvailableLabels = functionsAvailableLabels;
@@ -66,7 +70,6 @@ public class RootFinderGUI extends JFrame implements ActionListener {
     }
     
     private JComponent leftPanel() {
-        JTabbedPane leftPanel = new JTabbedPane(JTabbedPane.TOP);
         leftPanel.addTab("Input", userInputPanel());
         leftPanel.addTab("Table", tabularData());
         
@@ -79,7 +82,6 @@ public class RootFinderGUI extends JFrame implements ActionListener {
         
         pnl.add(new JLabel("Select a function:"));
         functionsDropdown = new JComboBox<>(functionsAvailableLabels);
-        functionsDropdown.addActionListener(this);
         functionsDropdown.setActionCommand("functionSelected");
         functionsDropdown.setMaximumSize(new Dimension(200, 25));
         functionsDropdown.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -87,16 +89,14 @@ public class RootFinderGUI extends JFrame implements ActionListener {
         
         pnl.add(new JLabel("Select numerical method(s):"));
         numericalMethodsBtnGroup = new ArrayList<>();
-        pnl.add(checkBox("Newton-Raphson", "numericalMethodSelected", numericalMethodsBtnGroup));
-        pnl.add(checkBox("Secant", "numericalMethodSelected", numericalMethodsBtnGroup));
-        pnl.add(checkBox("Bisection", "numericalMethodSelected", numericalMethodsBtnGroup));
-        pnl.add(checkBox("Other", "numericalMethodSelected", numericalMethodsBtnGroup));
+        pnl.add(checkBox("Newton-Raphson", "newtonRaphson", numericalMethodsBtnGroup));
+        pnl.add(checkBox("Secant", "secant", numericalMethodsBtnGroup));
+        pnl.add(checkBox("Bisection", "bisection", numericalMethodsBtnGroup));
+        pnl.add(checkBox("Other", "other", numericalMethodsBtnGroup));
         
         JPanel startingPointInputPanel = new JPanel();
         startingPointInputPanel.setLayout(new BoxLayout(startingPointInputPanel, BoxLayout.X_AXIS));
-        JTextField x0 = new JTextField("", 4);
         startingPointInputPanel.setMaximumSize(new Dimension(250, x0.getPreferredSize().height));
-        JTextField x1 = new JTextField("", 4);
         startingPointInputPanel.add(new JLabel("Set starting point(s): "));
         startingPointInputPanel.add(new JLabel("x0: "));
         startingPointInputPanel.add(x0);
@@ -105,9 +105,6 @@ public class RootFinderGUI extends JFrame implements ActionListener {
         startingPointInputPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         pnl.add(startingPointInputPanel);
         
-        JButton findRootBtn = new JButton("Find Root");
-        findRootBtn.addActionListener(this);
-        findRootBtn.setActionCommand("FindRoot");
         pnl.add(findRootBtn);
         
         return pnl;
@@ -115,7 +112,6 @@ public class RootFinderGUI extends JFrame implements ActionListener {
     
     private JCheckBox checkBox(String text, String actionCommand, ArrayList<JCheckBox> btnGroup) {
         JCheckBox checkBox = new JCheckBox(text);
-        checkBox.addActionListener(this);
         checkBox.setActionCommand(actionCommand);
         btnGroup.add(checkBox);
         return checkBox;
@@ -131,12 +127,7 @@ public class RootFinderGUI extends JFrame implements ActionListener {
         
         tableData.addRow(new Object[] {"x0", "x1"});
         
-        JButton addRowBtn = new JButton("Add row");
-        addRowBtn.addActionListener(this);
-        addRowBtn.setActionCommand("AddRow");
-        
         container.add(table, BorderLayout.CENTER);
-        container.add(addRowBtn, BorderLayout.SOUTH);
         
         return container;
     }
@@ -160,25 +151,13 @@ public class RootFinderGUI extends JFrame implements ActionListener {
         chart.updateXYSeries("f(x)", function.getX(), function.getY(), null);
         chartPanel.repaint();
     }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        switch (e.getActionCommand()) {
-            case "numericalMethodSelected":
-                System.out.println("------------------\nnumericalMethodsSelected\n------------------");
-                for(JCheckBox c: numericalMethodsBtnGroup) {
-                    String isSelected = c.isSelected() ? " is " : " is NOT ";
-                    System.out.println(c.getText() + isSelected + "selected");
-                }
-                System.out.println("------------------");
-                break;
-            case "AddRow":
-                tableData.addRow(new Object[] {"new", "data"});
-                break;
-            default:
-                System.out.println(e.getActionCommand());
-                break;
-        }
+    
+    public void addTableRow(String[] data) {
+        tableData.addRow(data);
+    }
+    
+    public void switchTab() {
+        leftPanel.setSelectedIndex( leftPanel.getSelectedIndex() == 0 ? 1 : 0 );
     }
     
 }

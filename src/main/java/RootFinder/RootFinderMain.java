@@ -3,7 +3,6 @@ package RootFinder;
 import RootFinder.Functions.Euler;
 import RootFinder.Functions.Logarithm;
 import RootFinder.Functions.Quadratic;
-import java.awt.event.ActionEvent;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
@@ -27,8 +26,12 @@ public class RootFinderMain {
         // Set up GUI
         RootFinderGUI gui = new RootFinderGUI(functionsAvailableLabels, new Quadratic(false));
         
+        /**
+         * ActionListeners
+         */
+        
         // Update the chart when user changes function using dropdown menu
-        gui.functionsDropdown.addActionListener((ActionEvent e) -> {
+        gui.functionsDropdown.addActionListener(e -> {
             switch (functionsAvailableTags[gui.functionsDropdown.getSelectedIndex()]) {
                 case "quadratic":
                     gui.updateChart(new Quadratic(true));
@@ -40,6 +43,21 @@ public class RootFinderMain {
                     gui.updateChart(new Euler(true));
                     break;
             }
+        });
+        
+        // Numerical method(s) selection
+        gui.numericalMethodsBtnGroup.forEach(checkbox -> {
+            checkbox.addActionListener(e -> {
+                String status = checkbox.isSelected() ? " checked" : " unchecked";
+                System.out.println(e.getActionCommand() + status);
+            });
+        });
+        
+        // "Find Root" button
+        gui.findRootBtn.addActionListener(e -> {
+            // Testing if addTableRow works
+            gui.addTableRow(new String[] {gui.x0.getText(), gui.x1.getText()});
+            gui.switchTab();
         });
     }
 
