@@ -7,6 +7,7 @@ package LinkedList;
  */
 public class LinkedList {
     private final DoubleNode head;
+    private DoubleNode last;
     private DoubleNode tail; // Keep track of the tail
 
     /**
@@ -30,12 +31,15 @@ public class LinkedList {
      */
     public void add(double e) {
         
+        // Create the node
+        last = new DoubleNode(e, null);
+        
         // If this is the first element
         if(head.getNext() == null) {
-            tail = new DoubleNode(e, null);
+            tail = last;
             head.setNext(tail);
         } else {
-            tail.setNext(new DoubleNode(e, null));
+            tail.setNext(last);
             tail = tail.getNext();
         }
         
