@@ -47,6 +47,10 @@ public class LinkedList {
         length++;
     }
     
+    public double getLastElement() {
+        return last.getElement();
+    }
+    
     /**
      * Convert linked list to String
      * 
