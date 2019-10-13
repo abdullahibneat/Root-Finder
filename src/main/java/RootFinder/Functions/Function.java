@@ -84,7 +84,16 @@ public abstract class Function {
      * @param x The x value
      * @return y value
      */
-    abstract double computeY(double x);
+    public abstract double computeY(double x);
+    
+    /**
+     * Abstract method
+     * This is the f'(x) function.
+     * 
+     * @param x The x value
+     * @return derivative at x
+     */
+    public abstract double computeYderivative(double x);
     
     /**
      * @return Array of all x values

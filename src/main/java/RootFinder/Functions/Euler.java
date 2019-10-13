@@ -45,7 +45,19 @@ public class Euler extends Function {
      * @return y value
      */
     @Override
-    double computeY(double x) {
+    public double computeY(double x) {
         return Math.exp(x) - 3*x;
     }
+    
+    /**
+     * Abstract method
+     * This is the f'(x) function.
+     * 
+     * @param x The x value
+     * @return derivative at x
+     */
+    @Override
+    public double computeYderivative(double x) {
+        return Math.exp(x) - 3;
+    };
 }

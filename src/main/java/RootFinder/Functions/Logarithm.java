@@ -45,7 +45,19 @@ public class Logarithm extends Function {
      * @return y value
      */
     @Override
-    double computeY(double x) {
+    public double computeY(double x) {
         return Math.log(x + 1) + 1;
     }
+    
+    /**
+     * Abstract method
+     * This is the f'(x) function.
+     * 
+     * @param x The x value
+     * @return derivative at x
+     */
+    @Override
+    public double computeYderivative(double x) {
+        return 1 / (x + 1);
+    };
 }

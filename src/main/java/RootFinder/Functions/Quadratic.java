@@ -45,7 +45,19 @@ public class Quadratic extends Function {
      * @return y value
      */
     @Override
-    double computeY(double x) {
+    public double computeY(double x) {
         return x - Math.pow(x, 2);
     }
+    
+    /**
+     * Abstract method
+     * This is the f'(x) function.
+     * 
+     * @param x The x value
+     * @return derivative at x
+     */
+    @Override
+    public double computeYderivative(double x) {
+        return 1 - 2*x;
+    };
 }
