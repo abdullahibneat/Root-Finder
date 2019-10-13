@@ -48,6 +48,7 @@ public class RootFinderGUI extends JFrame {
     // User inputs
     public JTextField x0 = new JTextField("", 4);
     public JTextField x1 = new JTextField("", 4);
+    public JTextField precision = new JTextField("", 4);
     public JButton findRootBtn = new JButton("Find Root");
     
     public RootFinderGUI(String[] functionsAvailableLabels, Function function){
@@ -104,6 +105,14 @@ public class RootFinderGUI extends JFrame {
         startingPointInputPanel.add(x1);
         startingPointInputPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         pnl.add(startingPointInputPanel);
+        
+        JPanel precitionInputPanel = new JPanel();
+        precitionInputPanel.setLayout(new BoxLayout(precitionInputPanel, BoxLayout.X_AXIS));
+        precitionInputPanel.setMaximumSize(new Dimension(250, precision.getPreferredSize().height));
+        precitionInputPanel.add(new JLabel("Enter precision: "));
+        precitionInputPanel.add(precision);
+        precitionInputPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        pnl.add(precitionInputPanel);
         
         pnl.add(findRootBtn);
         

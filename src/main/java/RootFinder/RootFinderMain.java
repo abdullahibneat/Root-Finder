@@ -56,7 +56,7 @@ public class RootFinderMain {
         // "Find Root" button
         gui.findRootBtn.addActionListener(e -> {
             // Testing if addTableRow works
-            gui.addTableRow(new String[] {gui.x0.getText(), gui.x1.getText()});
+            gui.addTableRow(new String[] {gui.x0.getText() + ", " + gui.x1.getText(), gui.precision.getText()});
             gui.switchTab();
         });
     }
