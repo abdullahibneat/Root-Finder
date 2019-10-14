@@ -82,6 +82,13 @@ public class RootFinderMain {
                 gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", secant[i]) });
             }
             
+            // Bisection method implementatin
+            gui.addTableRow(new String[] {"Bisection", "method"});
+            double[] bisection = bisection(currentFunction, Double.parseDouble(gui.x0.getText()), Double.parseDouble(gui.x1.getText()), Double.parseDouble(gui.precision.getText()));
+            for (int i = 0; i < bisection.length; i++) {
+                gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", bisection[i]) });
+            }
+            
             gui.switchTab();
         });
     }
@@ -115,6 +122,38 @@ public class RootFinderMain {
             System.arraycopy(out_copy, 0, out, 0, out_copy.length);
             out[out.length - 1] = Xn;
             if(Math.abs(Xn - Xn_1) < precision) break;
+        }
+        return out;
+    }
+    
+    public double[] bisection(Function f, double x0, double x1, double precision) {
+        // Function must use Array
+        f.useArray(true);
+        
+        double[] out = {x0, x1};
+        
+        double a = out[out.length-1];
+        double b = out[out.length-2];
+        
+        while(true) {
+            double c = (a + b) / 2;
+            
+            double Fa = f.computeY(a);
+            double Fb = f.computeY(b);
+            double Fc = f.computeY(c);
+            
+            double[] out_copy = out.clone();
+            out = new double[out.length + 1];
+            System.arraycopy(out_copy, 0, out, 0, out_copy.length);
+            out[out.length - 1] = c;
+            
+            if((Fc < 0 && Fa > 0) || (Fc > 0 && Fa < 0)) {
+                b = c;
+                if(Math.abs(c - a) < precision) break;
+            } else {
+                a = c;
+                if(Math.abs(c - b) < precision) break;
+            }
         }
         return out;
     }
