@@ -10,15 +10,18 @@ import LinkedList.LinkedList;
 public abstract class Function {
     
     // x, y values to store as array
-    private final double[] x_array;
-    private final double[] y_array;
+    private double[] x_array;
+    private double[] y_array;
     
     // x, y values to store as LinkedList
-    private final LinkedList x_list;
-    private final LinkedList y_list;
+    private LinkedList x_list;
+    private LinkedList y_list;
+    
+    // Length of arrays / LinkedLists
+    private final int length;
     
     // Use array or LinkedList?
-    private final boolean useArray;
+    private boolean useArray;
     
     // Offset x values to center the graph
     private final double offset;
@@ -38,21 +41,8 @@ public abstract class Function {
         this.offset = offset;
         this.useArray = useArray;
         this.precision = precision;
-        
-        if(useArray) {
-            x_array = new double[length*precision];
-            y_array = new double[length*precision];
-            
-            x_list = null;
-            y_list = null;
-        } else {
-            x_list = new LinkedList();
-            y_list = new LinkedList();
-            
-            x_array = null;
-            y_array = null;
-        }
-        populateValues(length);
+        this.length = length;
+        useArray(useArray);
     }
     
     /**
@@ -60,7 +50,7 @@ public abstract class Function {
      * 
      * @param length Number of x values, larger will generate a more accurate graph
      */
-    private void populateValues(int length) {
+    private void populateValues() {
         
         int index = 0;
         double step = (double)1 / precision;
@@ -75,6 +65,31 @@ public abstract class Function {
                 y_list.add(computeY(x_value));
             }
         }
+    }
+    
+    /**
+     * Method to switch between using array and LinkedList
+     * 
+     * @param b Set to true to use Array, false for LinkedList
+     */
+    public final void useArray(boolean b) {
+        useArray = b;
+        
+        if(useArray) {
+            x_array = new double[length*precision];
+            y_array = new double[length*precision];
+            
+            x_list = null;
+            y_list = null;
+        } else {
+            x_list = new LinkedList();
+            y_list = new LinkedList();
+            
+            x_array = null;
+            y_array = null;
+        }
+        
+        populateValues();
     }
     
     /**
