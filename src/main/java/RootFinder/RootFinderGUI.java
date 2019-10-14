@@ -18,6 +18,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -130,12 +131,15 @@ public class RootFinderGUI extends JFrame {
         JPanel container = new JPanel();
         container.setLayout(new BorderLayout());
         
+        JScrollPane sp = new JScrollPane(table);
+        sp.setPreferredSize(container.getSize());
+        
         // Add some dummy data
         tableData.addColumn("Column 1");
         tableData.addColumn("Column 2");
         initializeTable();
         
-        container.add(table, BorderLayout.CENTER);
+        container.add(sp, BorderLayout.CENTER);
         
         return container;
     }
