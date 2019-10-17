@@ -37,6 +37,7 @@ public class RootFinderGUI extends JFrame {
     public JComboBox<String> functionsDropdown; // Dropdown of functions
     private final String[] functionsAvailableLabels; // Functions in JComboBox
     public ArrayList<JCheckBox> numericalMethodsBtnGroup; // List of checkboxes for numerical methods
+    public int requireX1 = 0; // This is to check if x1 input should be enabled or not
     
     private final JTabbedPane leftPanel = new JTabbedPane(JTabbedPane.TOP); // Tabbed panel
     private final DefaultTableModel tableData = new DefaultTableModel();
@@ -103,6 +104,11 @@ public class RootFinderGUI extends JFrame {
         startingPointInputPanel.add(new JLabel("x0: "));
         startingPointInputPanel.add(x0);
         startingPointInputPanel.add(new JLabel("x1: "));
+        
+        // Disable x1 input by default
+        x1.setEnabled(false);
+        x1.setText("N/A");
+        
         startingPointInputPanel.add(x1);
         startingPointInputPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         pnl.add(startingPointInputPanel);
@@ -135,8 +141,8 @@ public class RootFinderGUI extends JFrame {
         sp.setPreferredSize(container.getSize());
         
         // Add some dummy data
-        tableData.addColumn("Column 1");
-        tableData.addColumn("Column 2");
+        tableData.addColumn("Iteration (i)");
+        tableData.addColumn("Xi");
         initializeTable();
         
         container.add(sp, BorderLayout.CENTER);
@@ -146,7 +152,6 @@ public class RootFinderGUI extends JFrame {
     
     public void initializeTable() {
         tableData.setRowCount(0);
-        tableData.addRow(new Object[] {"Iteration", "x"});
     }
     
     private JComponent rightPanel() {
@@ -175,6 +180,20 @@ public class RootFinderGUI extends JFrame {
     
     public void switchTab() {
         leftPanel.setSelectedIndex( leftPanel.getSelectedIndex() == 0 ? 1 : 0 );
+    }
+    
+    public String[] getSelectedMethods() {
+        String[] out = new String[0];
+        for(JCheckBox c: numericalMethodsBtnGroup) {
+            if(c.isSelected()) {
+                String[] out_copy = out.clone();
+                out = new String[out.length + 1];
+                System.arraycopy(out_copy, 0, out, 0, out_copy.length);
+                out[out.length - 1] = c.getActionCommand();
+            }
+        }
+        
+        return out;
     }
     
 }

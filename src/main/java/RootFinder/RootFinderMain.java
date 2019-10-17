@@ -55,40 +55,63 @@ public class RootFinderMain {
         // Numerical method(s) selection
         gui.numericalMethodsBtnGroup.forEach(checkbox -> {
             checkbox.addActionListener(e -> {
-                String status = checkbox.isSelected() ? " checked" : " unchecked";
-                System.out.println(e.getActionCommand() + status);
+                if(checkbox.getActionCommand().equals("secant") || checkbox.getActionCommand().equals("bisection")) {
+                    if(checkbox.isSelected()) {
+                        gui.requireX1++;
+                        gui.x1.setEnabled(true);
+                        if(gui.x1.getText().equals("N/A")) gui.x1.setText("");
+                    } else {
+                        gui.requireX1--;
+                        if(gui.requireX1 < 1) {
+                            gui.x1.setEnabled(false);
+                            gui.x1.setText("N/A");
+                        }
+                    }
+                }
             });
         });
         
         // "Find Root" button
         gui.findRootBtn.addActionListener(e -> {
+            
             // Clear the table
             gui.initializeTable();
             
-            // Newton Raphson implementation
-            LinkedList nr = newtonRaphson(currentFunction, Double.parseDouble(gui.x0.getText()), Double.parseDouble(gui.precision.getText()));
-            // Convert LinkedList to array so I can iterate
-            double[] nr_array = nr.toDoubleArray();
-            
-            // Add values to table
-            for (int i = 0; i < nr_array.length; i++) {
-                gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", nr_array[i]) });
+            for(String method: gui.getSelectedMethods()) {
+                switch(method) {
+                    case "newtonRaphson":            
+                        // Newton Raphson implementation
+                        gui.addTableRow(new String[] {"Newton Raphson", "method"});
+                        LinkedList nr = newtonRaphson(currentFunction, Double.parseDouble(gui.x0.getText()), Double.parseDouble(gui.precision.getText()));
+                        // Convert LinkedList to array so I can iterate
+                        double[] nr_array = nr.toDoubleArray();
+
+                        // Add values to table
+                        for (int i = 0; i < nr_array.length; i++) {
+                            gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", nr_array[i]) });
+                        }
+                        break;
+                    case "secant":
+                        // Secant method implementatin
+                        gui.addTableRow(new String[] {"Secant", "method"});
+                        double[] secant = secant(currentFunction, Double.parseDouble(gui.x0.getText()), Double.parseDouble(gui.x1.getText()), Double.parseDouble(gui.precision.getText()));
+                        for (int i = 0; i < secant.length; i++) {
+                            gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", secant[i]) });
+                        }
+                        break;
+                    case "bisection":            
+                        // Bisection method implementatin
+                        gui.addTableRow(new String[] {"Bisection", "method"});
+                        double[] bisection = bisection(currentFunction, Double.parseDouble(gui.x0.getText()), Double.parseDouble(gui.x1.getText()), Double.parseDouble(gui.precision.getText()));
+                        for (int i = 0; i < bisection.length; i++) {
+                            gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", bisection[i]) });
+                        }
+                        break;
+                    case "other":
+                        System.out.println("Oh oh");
+                        break;
+                }
             }
-            
-            // Secant method implementatin
-            gui.addTableRow(new String[] {"Secant", "method"});
-            double[] secant = secant(currentFunction, Double.parseDouble(gui.x0.getText()), Double.parseDouble(gui.x1.getText()), Double.parseDouble(gui.precision.getText()));
-            for (int i = 0; i < secant.length; i++) {
-                gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", secant[i]) });
-            }
-            
-            // Bisection method implementatin
-            gui.addTableRow(new String[] {"Bisection", "method"});
-            double[] bisection = bisection(currentFunction, Double.parseDouble(gui.x0.getText()), Double.parseDouble(gui.x1.getText()), Double.parseDouble(gui.precision.getText()));
-            for (int i = 0; i < bisection.length; i++) {
-                gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", bisection[i]) });
-            }
-            
             gui.switchTab();
         });
     }
