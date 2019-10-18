@@ -142,12 +142,17 @@ public class RootFinderMain {
                                 gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", secant[i]) });
                             }
                             break;
-                        case "bisection":            
-                            // Bisection method implementatin
-                            gui.addTableRow(new String[] {"Bisection", "method"});
-                            double[] bisection = bisection(currentFunction, x0, x1, precision);
-                            for (int i = 0; i < bisection.length; i++) {
-                                gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", bisection[i]) });
+                        case "bisection":
+                            try {
+                                // Bisection method implementatin
+                                double[] bisection = bisection(currentFunction, x0, x1, precision);
+                                gui.addTableRow(new String[] {"Bisection", "method"});
+                                for (int i = 0; i < bisection.length; i++) {
+                                    gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", bisection[i]) });
+                                }
+                            } catch(Exception ex) {
+                                gui.addTableRow(new String[] {"Failed:", "Bisection method"});
+                                gui.warning(ex.getMessage());
                             }
                             break;
                         case "other":
@@ -195,7 +200,7 @@ public class RootFinderMain {
         return out;
     }
     
-    public double[] bisection(Function f, double x0, double x1, double precision) {
+    public double[] bisection(Function f, double x0, double x1, double precision) throws Exception{
         // Function must use Array
         f.useArray(true);
         
@@ -204,27 +209,32 @@ public class RootFinderMain {
         double a = out[out.length-1];
         double b = out[out.length-2];
         
-        while(true) {
-            double c = (a + b) / 2;
-            
-            double Fa = f.computeY(a);
-            double Fb = f.computeY(b);
-            double Fc = f.computeY(c);
-            
-            double[] out_copy = out.clone();
-            out = new double[out.length + 1];
-            System.arraycopy(out_copy, 0, out, 0, out_copy.length);
-            out[out.length - 1] = c;
-            
-            if((Fc < 0 && Fa > 0) || (Fc > 0 && Fa < 0)) {
-                b = c;
-                if(Math.abs(c - a) < precision) break;
-            } else {
-                a = c;
-                if(Math.abs(c - b) < precision) break;
+        // If f(a) and f(b) are of opposite sign, carry on with the bisection method, else throw exception
+        if((f.computeY(a) > 0 && f.computeY(b) < 0) || (f.computeY(a) < 0 && f.computeY(b) > 0)) {        
+            while(true) {
+                double c = (a + b) / 2;
+
+                double Fa = f.computeY(a);
+                double Fb = f.computeY(b);
+                double Fc = f.computeY(c);
+
+                double[] out_copy = out.clone();
+                out = new double[out.length + 1];
+                System.arraycopy(out_copy, 0, out, 0, out_copy.length);
+                out[out.length - 1] = c;
+
+                if((Fc < 0 && Fa > 0) || (Fc > 0 && Fa < 0)) {
+                    b = c;
+                    if(Math.abs(c - a) < precision) break;
+                } else {
+                    a = c;
+                    if(Math.abs(c - b) < precision) break;
+                }
             }
+            return out;
+        } else {
+            throw new Exception("f(x0) and f(x1) must be of opposite sign");
         }
-        return out;
     }
     
     /**
