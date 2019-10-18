@@ -23,13 +23,16 @@ public class RootFinderMain {
     private String selectedFunction; // Value of dropdown menu
     private Function currentFunction = new Quadratic(false);
     
+    // GUI
+    private final RootFinderGUI gui;
+    
     public static void main(String[] args) {
         RootFinderMain rootFinder = new RootFinderMain();
     }
     
     public RootFinderMain() {
         // Set up GUI
-        RootFinderGUI gui = new RootFinderGUI(functionsAvailableLabels, currentFunction);
+        gui = new RootFinderGUI(functionsAvailableLabels, currentFunction);
         
         /**
          * ActionListeners
@@ -74,45 +77,88 @@ public class RootFinderMain {
         // "Find Root" button
         gui.findRootBtn.addActionListener(e -> {
             
-            // Clear the table
-            gui.initializeTable();
+            // Use while true to check for input values
+            while(true) {
             
-            for(String method: gui.getSelectedMethods()) {
-                switch(method) {
-                    case "newtonRaphson":            
-                        // Newton Raphson implementation
-                        gui.addTableRow(new String[] {"Newton Raphson", "method"});
-                        LinkedList nr = newtonRaphson(currentFunction, Double.parseDouble(gui.x0.getText()), Double.parseDouble(gui.precision.getText()));
-                        // Convert LinkedList to array so I can iterate
-                        double[] nr_array = nr.toDoubleArray();
+                // Clear the table
+                gui.initializeTable();
 
-                        // Add values to table
-                        for (int i = 0; i < nr_array.length; i++) {
-                            gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", nr_array[i]) });
-                        }
-                        break;
-                    case "secant":
-                        // Secant method implementatin
-                        gui.addTableRow(new String[] {"Secant", "method"});
-                        double[] secant = secant(currentFunction, Double.parseDouble(gui.x0.getText()), Double.parseDouble(gui.x1.getText()), Double.parseDouble(gui.precision.getText()));
-                        for (int i = 0; i < secant.length; i++) {
-                            gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", secant[i]) });
-                        }
-                        break;
-                    case "bisection":            
-                        // Bisection method implementatin
-                        gui.addTableRow(new String[] {"Bisection", "method"});
-                        double[] bisection = bisection(currentFunction, Double.parseDouble(gui.x0.getText()), Double.parseDouble(gui.x1.getText()), Double.parseDouble(gui.precision.getText()));
-                        for (int i = 0; i < bisection.length; i++) {
-                            gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", bisection[i]) });
-                        }
-                        break;
-                    case "other":
-                        System.out.println("Oh oh");
-                        break;
+                // Input values to be checked
+                double x0 = 0;
+                double x1 = 0;
+                double precision = 0;
+
+                // Check if any numerical method is selected
+                if(gui.getSelectedMethods().length == 0) {
+                    gui.warning("Please select 1 or more numerical methods");
+                    break;
                 }
+
+                // Check x0
+                try {
+                    x0 = Double.parseDouble(gui.x0.getText());
+                } catch(NumberFormatException nfe) {
+                    gui.warning("Ensure x0 is a valid number");
+                    break;
+                }
+
+                // Check x1
+                try {
+                    if(gui.x1.isEnabled()) {
+                        x1 = Double.parseDouble(gui.x1.getText());
+                    }
+                } catch(NumberFormatException nfe) {
+                    gui.warning("Ensure x1 is a valid number");
+                    break;
+                }
+
+                // Check precision
+                try {
+                    precision = Double.parseDouble(gui.precision.getText());
+                } catch(NumberFormatException nfe) {
+                    gui.warning("Ensure precision is a valid number");
+                    break;
+                }
+                
+                for(String method: gui.getSelectedMethods()) {
+                    switch(method) {
+                        case "newtonRaphson":            
+                            // Newton Raphson implementation
+                            gui.addTableRow(new String[] {"Newton Raphson", "method"});
+                            LinkedList nr = newtonRaphson(currentFunction, x0, precision);
+                            // Convert LinkedList to array so I can iterate
+                            double[] nr_array = nr.toDoubleArray();
+
+                            // Add values to table
+                            for (int i = 0; i < nr_array.length; i++) {
+                                gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", nr_array[i]) });
+                            }
+                            break;
+                        case "secant":
+                            // Secant method implementatin
+                            gui.addTableRow(new String[] {"Secant", "method"});
+                            double[] secant = secant(currentFunction, x0, x1, precision);
+                            for (int i = 0; i < secant.length; i++) {
+                                gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", secant[i]) });
+                            }
+                            break;
+                        case "bisection":            
+                            // Bisection method implementatin
+                            gui.addTableRow(new String[] {"Bisection", "method"});
+                            double[] bisection = bisection(currentFunction, x0, x1, precision);
+                            for (int i = 0; i < bisection.length; i++) {
+                                gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", bisection[i]) });
+                            }
+                            break;
+                        case "other":
+                            System.out.println("Oh oh");
+                            break;
+                    }
+                }
+                gui.switchTab();
+                
+                break;
             }
-            gui.switchTab();
         });
     }
     

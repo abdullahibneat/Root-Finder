@@ -17,6 +17,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -198,6 +199,10 @@ public class RootFinderGUI extends JFrame {
         }
         
         return out;
+    }
+    
+    public void warning(String message) {
+        JOptionPane.showMessageDialog(this, message);
     }
     
 }
