@@ -131,4 +131,57 @@ public class NumericalMethods {
     private double computeBisection(double a, double b) {
         return (a + b) / 2;
     }
+    
+    /**
+     * Implementation of the False Position method to find the root.
+     * 
+     * False position is using the bisection method, but instead of taking the middle point between x0 and x1,
+     * it takes the secant between the two points.
+     * 
+     * @param f Function whose roots need to be found
+     * @param x0 First starting point
+     * @param x1  Second starting point
+     * @param precision Degree of accuracy for this method to stop
+     * 
+     * @return LinkedList containing the iterations of the x0 value.
+     * @throws java.lang.Exception Bisection requires f(x0) and f(x1) to be of opposite sign. Throws error if this condition is not fulfilled.
+     */
+    public double[] falsePosition(Function f, double x0, double x1, double precision) throws Exception{
+        // Function must use Array
+        f.useArray(true);
+        
+        double[] out = {x0, x1};
+        
+        double a = out[out.length-1];
+        double b = out[out.length-2];
+        
+        // If f(a) and f(b) are of opposite sign, carry on with the bisection method, else throw exception
+        if((f.computeY(a) > 0 && f.computeY(b) < 0) || (f.computeY(a) < 0 && f.computeY(b) > 0)) {        
+            while(true) {
+                double c = computeSecant(f, a, b);
+
+                double Fa = f.computeY(a);
+                double Fc = f.computeY(c);
+
+                double[] out_copy = out.clone();
+                out = new double[out.length + 1];
+                System.arraycopy(out_copy, 0, out, 0, out_copy.length);
+                out[out.length - 1] = c;
+                
+                // Stop if f(c) is very close to 0
+                if(Fc < precision) break;
+
+                if((Fc < 0 && Fa > 0) || (Fc > 0 && Fa < 0)) {
+                    b = c;
+                    if(Math.abs(c - a) <= precision) break;
+                } else {
+                    a = c;
+                    if(Math.abs(c - b) <= precision) break;
+                }
+            }
+            return out;
+        } else {
+            throw new Exception("f(x0) and f(x1) must be of opposite sign");
+        }
+    }
 }

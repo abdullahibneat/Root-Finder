@@ -124,7 +124,7 @@ public class RootFinderGUI extends JFrame {
         pnl.add(checkBox("Newton-Raphson", "newtonRaphson", numericalMethodsBtnGroup));
         pnl.add(checkBox("Secant", "secant", numericalMethodsBtnGroup));
         pnl.add(checkBox("Bisection", "bisection", numericalMethodsBtnGroup));
-        pnl.add(checkBox("Other", "other", numericalMethodsBtnGroup));
+        pnl.add(checkBox("False Position", "falsePosition", numericalMethodsBtnGroup));
         
         // Starting points fields
         JPanel startingPointInputPanel = new JPanel();

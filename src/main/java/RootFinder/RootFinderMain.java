@@ -64,11 +64,11 @@ public class RootFinderMain {
             checkbox.addActionListener(e -> {
                 /**
                  * When the user changes the status of a JCheckBox,
-                 * check if bisection and/or secant are still selected.
+                 * check if bisection, secant and/or false position are still selected.
                  * If they are, the x1 input is still required,
                  * otherwise x1 can be disabled.
                  */
-                if(checkbox.getActionCommand().equals("secant") || checkbox.getActionCommand().equals("bisection")) {
+                if(!checkbox.getActionCommand().equals("newtonRaphson")) {
                     if(checkbox.isSelected()) {
                         gui.requireX1++;
                         gui.x1.setEnabled(true);
@@ -175,8 +175,21 @@ public class RootFinderMain {
                                 gui.warning(ex.getMessage());
                             }
                             break;
-                        case "other":
-                            gui.warning("Not yet implemented.");
+                        case "falsePosition":
+                            // Try/catch because false position requires f(x0) and f(x1) to be of opposite sign.
+                            try {
+                                // Bisection method implementatin
+                                double[] falsePosition = numericalMethods.falsePosition(currentFunction, x0, x1, precision);
+                                gui.addTableRow(new String[] {"False Position", "method"});
+                                for (int i = 0; i < falsePosition.length; i++) {
+                                    gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", falsePosition[i]) });
+                                }
+                                // Show the last root on the graph
+                                gui.addSeries("False Position", falsePosition[falsePosition.length - 1], currentFunction.computeY(falsePosition[falsePosition.length - 1]));
+                            } catch(Exception ex) {
+                                gui.addTableRow(new String[] {"Failed:", "False position method"});
+                                gui.warning(ex.getMessage());
+                            }
                             break;
                     }
                 }
