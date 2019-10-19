@@ -5,10 +5,7 @@ import RootFinder.Functions.Function;
 import RootFinder.Functions.Euler;
 import RootFinder.Functions.Logarithm;
 import RootFinder.Functions.Quadratic;
-import org.knowm.xchart.SwingWrapper;
-import org.knowm.xchart.XYChart;
-import org.knowm.xchart.XYChartBuilder;
-import org.knowm.xchart.style.markers.SeriesMarkers;
+import javax.swing.JCheckBox;
 
 /**
  * Main class
@@ -21,7 +18,7 @@ public class RootFinderMain {
     private final String[] functionsAvailableTags = {"quadratic", "logarithm", "euler"}; // Map above functions to recognizable tag
     
     private String selectedFunction; // Value of dropdown menu
-    private Function currentFunction = new Quadratic(false);
+    private Function currentFunction = new Quadratic(false); // Function selected by the user
     
     // GUI
     private final RootFinderGUI gui;
@@ -30,6 +27,9 @@ public class RootFinderMain {
         RootFinderMain rootFinder = new RootFinderMain();
     }
     
+    /**
+     * Main program
+     */
     public RootFinderMain() {
         // Set up GUI
         gui = new RootFinderGUI(functionsAvailableLabels, currentFunction);
@@ -56,8 +56,14 @@ public class RootFinderMain {
         });
         
         // Numerical method(s) selection
-        gui.numericalMethodsBtnGroup.forEach(checkbox -> {
+        gui.numericalMethodsBtnGroup.forEach((JCheckBox checkbox) -> {
             checkbox.addActionListener(e -> {
+                /**
+                 * When the user changes the status of a JCheckBox,
+                 * check if bisection and/or secant are still selected.
+                 * If they are, the x1 input is still required,
+                 * otherwise x1 can be disabled.
+                 */
                 if(checkbox.getActionCommand().equals("secant") || checkbox.getActionCommand().equals("bisection")) {
                     if(checkbox.isSelected()) {
                         gui.requireX1++;
@@ -76,24 +82,23 @@ public class RootFinderMain {
         
         // "Find Root" button
         gui.findRootBtn.addActionListener(e -> {
-            
             // Use while true to check for input values
             while(true) {
-            
+                
                 // Clear the table
                 gui.initializeTable();
-
+                
                 // Input values to be checked
-                double x0 = 0;
-                double x1 = 0;
-                double precision = 0;
-
+                double x0;
+                double x1;
+                double precision;
+                
                 // Check if any numerical method is selected
                 if(gui.getSelectedMethods().length == 0) {
                     gui.warning("Please select 1 or more numerical methods");
                     break;
                 }
-
+                
                 // Check x0
                 try {
                     x0 = Double.parseDouble(gui.x0.getText());
@@ -101,17 +106,19 @@ public class RootFinderMain {
                     gui.warning("Ensure x0 is a valid number");
                     break;
                 }
-
-                // Check x1
+                
+                // Check x1 (if enabled)
                 try {
                     if(gui.x1.isEnabled()) {
                         x1 = Double.parseDouble(gui.x1.getText());
+                    } else {
+                        x1 = x0;
                     }
                 } catch(NumberFormatException nfe) {
                     gui.warning("Ensure x1 is a valid number");
                     break;
                 }
-
+                
                 // Check precision
                 try {
                     precision = Double.parseDouble(gui.precision.getText());
@@ -120,15 +127,17 @@ public class RootFinderMain {
                     break;
                 }
                 
+                // ALL CHECKS PASSED
+                // Now process each numerical method
                 for(String method: gui.getSelectedMethods()) {
                     switch(method) {
-                        case "newtonRaphson":            
+                        case "newtonRaphson":
                             // Newton Raphson implementation
                             gui.addTableRow(new String[] {"Newton Raphson", "method"});
                             LinkedList nr = newtonRaphson(currentFunction, x0, precision);
                             // Convert LinkedList to array so I can iterate
                             double[] nr_array = nr.toDoubleArray();
-
+                            
                             // Add values to table
                             for (int i = 0; i < nr_array.length; i++) {
                                 gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", nr_array[i]) });
@@ -143,6 +152,7 @@ public class RootFinderMain {
                             }
                             break;
                         case "bisection":
+                            // Try/catch because bisection requires f(x0) and f(x1) to be of opposite sign.
                             try {
                                 // Bisection method implementatin
                                 double[] bisection = bisection(currentFunction, x0, x1, precision);
@@ -156,10 +166,11 @@ public class RootFinderMain {
                             }
                             break;
                         case "other":
-                            System.out.println("Oh oh");
+                            gui.warning("Not yet implemented.");
                             break;
                     }
                 }
+                // Switch tab to display the result to the user.
                 gui.switchTab();
                 
                 break;
@@ -167,6 +178,15 @@ public class RootFinderMain {
         });
     }
     
+    /**
+     * Implementation of the Newton-Raphson method to find the root.
+     * 
+     * @param f Function whose roots need to be found
+     * @param x0 Starting point
+     * @param precision Degree of accuracy for this method to stop
+     * 
+     * @return LinkedList containing the iterations of the x0 value.
+     */
     public LinkedList newtonRaphson(Function f, double x0, double precision) {
         // Function must use LinkedList
         f.useArray(false);
@@ -175,6 +195,7 @@ public class RootFinderMain {
         out.add(x0);
         while(true) {
             double Xn = out.getLastElement();
+            // Newton-Raphson formula
             double Xnplus1 = Xn - (f.computeY(Xn) / f.computeYderivative(Xn));
             out.add(Xnplus1);
             if(Math.abs(Xn - Xnplus1) <= precision) break;
@@ -182,6 +203,16 @@ public class RootFinderMain {
         return out;
     }
     
+    /**
+     * Implementation of the Secant method to find the root.
+     * 
+     * @param f Function whose roots need to be found
+     * @param x0 First starting point
+     * @param x1  Second starting point
+     * @param precision Degree of accuracy for this method to stop
+     * 
+     * @return LinkedList containing the iterations of the x0 value.
+     */
     public double[] secant(Function f, double x0, double x1, double precision) {
         // Function must use Array
         f.useArray(true);
@@ -190,6 +221,7 @@ public class RootFinderMain {
         while(true) {
             double Xn_1 = out[out.length-1];
             double Xn_2 = out[out.length-2];
+            // Secant method formula
             double Xn = Xn_1 - f.computeY(Xn_1) * (Xn_1 - Xn_2) / (f.computeY(Xn_1) - f.computeY(Xn_2));
             double[] out_copy = out.clone();
             out = new double[out.length + 1];
@@ -200,6 +232,17 @@ public class RootFinderMain {
         return out;
     }
     
+    /**
+     * Implementation of the Bisection method to find the root.
+     * 
+     * @param f Function whose roots need to be found
+     * @param x0 First starting point
+     * @param x1  Second starting point
+     * @param precision Degree of accuracy for this method to stop
+     * 
+     * @return LinkedList containing the iterations of the x0 value.
+     * @throws java.lang.Exception Bisection requires f(x0) and f(x1) to be of opposite sign. Throws error if this condition is not fulfilled.
+     */
     public double[] bisection(Function f, double x0, double x1, double precision) throws Exception{
         // Function must use Array
         f.useArray(true);
@@ -215,7 +258,6 @@ public class RootFinderMain {
                 double c = (a + b) / 2;
 
                 double Fa = f.computeY(a);
-                double Fb = f.computeY(b);
                 double Fc = f.computeY(c);
 
                 double[] out_copy = out.clone();
@@ -235,21 +277,5 @@ public class RootFinderMain {
         } else {
             throw new Exception("f(x0) and f(x1) must be of opposite sign");
         }
-    }
-    
-    /**
-     * Sample charts to test the XChart library
-     */
-    private void demoCharts() {
-        XYChart demoChart = new XYChartBuilder().width(600).height(500).build();
-        
-        Quadratic quadratic = new Quadratic(true);
-        Logarithm logarithm = new Logarithm(true);
-        Euler euler = new Euler(true);
-        
-        demoChart.addSeries("Quadratic", quadratic.getX(), quadratic.getY()).setMarker(SeriesMarkers.NONE);
-        demoChart.addSeries("Logarithm", logarithm.getX(), logarithm.getY()).setMarker(SeriesMarkers.NONE);
-        demoChart.addSeries("Euler", euler.getX(), euler.getY()).setMarker(SeriesMarkers.NONE);
-        new SwingWrapper<>(demoChart).displayChart();
     }
 }

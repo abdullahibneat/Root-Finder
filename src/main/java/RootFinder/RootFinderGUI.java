@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package RootFinder;
 
 import RootFinder.Functions.Function;
@@ -31,6 +26,7 @@ import org.knowm.xchart.XYChart;
 import org.knowm.xchart.internal.chartpart.SelectionZoom;
 
 /**
+ * The User Interface for the main application.
  *
  * @author Abdullah
  */
@@ -47,7 +43,7 @@ public class RootFinderGUI extends JFrame {
     
     private Function function;
     private final XYChart chart; // Function plot
-    private XChartPanel<XYChart> chartPanel; // Chart panel
+    private final XChartPanel<XYChart> chartPanel; // Chart panel
     
     // User inputs
     public JTextField x0 = new JTextField("", 4);
@@ -55,13 +51,26 @@ public class RootFinderGUI extends JFrame {
     public JTextField precision = new JTextField("", 4);
     public JButton findRootBtn = new JButton("Find Root");
     
+    /**
+     * Constructor for the GUI
+     * 
+     * @param functionsAvailableLabels The labels for each function that is available
+     * @param function The function that is displayed by default
+     */
     public RootFinderGUI(String[] functionsAvailableLabels, Function function){
         this.functionsAvailableLabels = functionsAvailableLabels;
         this.function = function;
         this.chart = QuickChart.getChart("Function", "x", "y", "f(x)", function.getX(), function.getY());
+        
+        // Add the chart to its panel
+        chartPanel = new XChartPanel<>(chart);
+        
         initializeGUI();
     }
 
+    /**
+     * Method to initialise the GUI
+     */
     private void initializeGUI() {        
         setTitle("Root Finder");
         setSize(1200, 500);
@@ -69,6 +78,7 @@ public class RootFinderGUI extends JFrame {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
         
         // Split pane
+        // Allows user to resize/hide panels for easier reading, e.g. make table larger, or hide the table altogether.
         JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel(), rightPanel());
         sp.setOneTouchExpandable(true);
         
@@ -77,6 +87,13 @@ public class RootFinderGUI extends JFrame {
         setVisible(true);
     }
     
+    /**
+     * Method to initialise the left panel.
+     * 
+     * The left panel is a JTabbedPane, which has tabs for user input and the table with all x values.
+     * 
+     * @return JTabbedPane
+     */
     private JComponent leftPanel() {
         leftPanel.addTab("Input", userInputPanel());
         leftPanel.addTab("Table", tabularData());
@@ -84,10 +101,16 @@ public class RootFinderGUI extends JFrame {
         return leftPanel;
     }
     
+    /**
+     * JPanel for user input
+     * 
+     * @return JPanel with input fields
+     */
     private JComponent userInputPanel() {
         JPanel pnl = new JPanel();
         pnl.setLayout(new BoxLayout(pnl, BoxLayout.Y_AXIS));
         
+        // Function selection dropdown
         pnl.add(new JLabel("Select a function:"));
         functionsDropdown = new JComboBox<>(functionsAvailableLabels);
         functionsDropdown.setActionCommand("functionSelected");
@@ -95,6 +118,7 @@ public class RootFinderGUI extends JFrame {
         functionsDropdown.setAlignmentX(Component.LEFT_ALIGNMENT);
         pnl.add(functionsDropdown);
         
+        // Numerical Method selection
         pnl.add(new JLabel("Select numerical method(s):"));
         numericalMethodsBtnGroup = new ArrayList<>();
         pnl.add(checkBox("Newton-Raphson", "newtonRaphson", numericalMethodsBtnGroup));
@@ -102,6 +126,7 @@ public class RootFinderGUI extends JFrame {
         pnl.add(checkBox("Bisection", "bisection", numericalMethodsBtnGroup));
         pnl.add(checkBox("Other", "other", numericalMethodsBtnGroup));
         
+        // Starting points fields
         JPanel startingPointInputPanel = new JPanel();
         startingPointInputPanel.setLayout(new BoxLayout(startingPointInputPanel, BoxLayout.X_AXIS));
         startingPointInputPanel.setMaximumSize(new Dimension(250, x0.getPreferredSize().height));
@@ -118,6 +143,7 @@ public class RootFinderGUI extends JFrame {
         startingPointInputPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         pnl.add(startingPointInputPanel);
         
+        // Precision field
         JPanel precitionInputPanel = new JPanel();
         precitionInputPanel.setLayout(new BoxLayout(precitionInputPanel, BoxLayout.X_AXIS));
         precitionInputPanel.setMaximumSize(new Dimension(250, precision.getPreferredSize().height));
@@ -126,11 +152,21 @@ public class RootFinderGUI extends JFrame {
         precitionInputPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         pnl.add(precitionInputPanel);
         
+        // Add the button
         pnl.add(findRootBtn);
         
         return pnl;
     }
     
+    /**
+     * Method to generate a JCheckBox
+     * 
+     * @param text Text to be displayed
+     * @param actionCommand Action Command
+     * @param btnGroup Button Group the JCheckBox should be added to
+     * 
+     * @return JCheckBox
+     */
     private JCheckBox checkBox(String text, String actionCommand, ArrayList<JCheckBox> btnGroup) {
         JCheckBox checkBox = new JCheckBox(text);
         checkBox.setActionCommand(actionCommand);
@@ -138,14 +174,22 @@ public class RootFinderGUI extends JFrame {
         return checkBox;
     }
     
+    /**
+     * JPanel with a JTable component
+     * 
+     * This is used to display all the iterations of each numerical method
+     * 
+     * @return Table
+     */
     private JComponent tabularData() {
         JPanel container = new JPanel();
         container.setLayout(new BorderLayout());
         
+        // If the table has many rows, show a vertical scrollbar
         JScrollPane sp = new JScrollPane(table);
         sp.setPreferredSize(container.getSize());
         
-        // Add some dummy data
+        // Set column names
         tableData.addColumn("Iteration (i)");
         tableData.addColumn("Xi");
         initializeTable();
@@ -155,14 +199,22 @@ public class RootFinderGUI extends JFrame {
         return container;
     }
     
+    /**
+     * Method to empty the table
+     */
     public void initializeTable() {
         tableData.setRowCount(0);
     }
     
+    /**
+     * Method to initialise the right panel.
+     * 
+     * The right panel contains the XChart plot to display the function to the user.
+     * 
+     * @return XChart panel
+     */
     private JComponent rightPanel() {
         JPanel rightPanel = new JPanel(new BorderLayout());
-        
-        chartPanel = new XChartPanel<>(chart);
         
         // Enable zooming in into the graph
         SelectionZoom sz = new SelectionZoom();
@@ -173,20 +225,38 @@ public class RootFinderGUI extends JFrame {
         return rightPanel;
     }
     
+    /**
+     * Method to update the function displayed in the chart
+     * 
+     * @param f New function to be displayed
+     */
     public void updateChart(Function f) {
         function = f;
         chart.updateXYSeries("f(x)", function.getX(), function.getY(), null);
         chartPanel.repaint();
     }
     
+    /**
+     * Method to add a new row to the table.
+     * 
+     * @param data The data to be added to the row
+     */
     public void addTableRow(String[] data) {
         tableData.addRow(data);
     }
     
+    /**
+     * Method to switch tab in the JTabbedPane
+     */
     public void switchTab() {
         leftPanel.setSelectedIndex( leftPanel.getSelectedIndex() == 0 ? 1 : 0 );
     }
     
+    /**
+     * Method to retrieve the numerical methods the user has selected
+     * 
+     * @return Array of actionCommands of selected JCheckBoxes
+     */
     public String[] getSelectedMethods() {
         String[] out = new String[0];
         for(JCheckBox c: numericalMethodsBtnGroup) {
@@ -201,6 +271,11 @@ public class RootFinderGUI extends JFrame {
         return out;
     }
     
+    /**
+     * Method to display a warning to the user
+     * 
+     * @param message Message to be displayed
+     */
     public void warning(String message) {
         JOptionPane.showMessageDialog(this, message);
     }

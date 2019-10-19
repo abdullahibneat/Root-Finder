@@ -47,6 +47,11 @@ public class LinkedList {
         length++;
     }
     
+    /**
+     * Return the last element in the LinkedList
+     * 
+     * @return Last element
+     */
     public double getLastElement() {
         return last.getElement();
     }
@@ -78,11 +83,11 @@ public class LinkedList {
     public double[] toDoubleArray() {
         double[] out = new double[length];
         
-        DoubleNode tail = head;
+        DoubleNode n = head;
         
         for (int i = 0; i < length; i++) {
-            tail = tail.getNext();
-            out[i] = tail.getElement();
+            n = n.getNext();
+            out[i] = n.getElement();
         }
         
         return out;
