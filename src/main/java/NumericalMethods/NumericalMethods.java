@@ -28,11 +28,18 @@ public class NumericalMethods {
         while(true) {
             double Xn = out.getLastElement();
             // Newton-Raphson formula
-            double Xnplus1 = Xn - (f.computeY(Xn) / f.computeYderivative(Xn));
+            double Xnplus1 = computeNewtonRaphson(f, Xn);
             out.add(Xnplus1);
             if(Math.abs(Xn - Xnplus1) <= precision) break;
         }
         return out;
+    }
+    
+    /**
+     * Newton-Raphson formula
+     */
+    private double computeNewtonRaphson(Function f, double x) {
+        return x - (f.computeY(x) / f.computeYderivative(x));
     }
     
     /**
@@ -54,7 +61,7 @@ public class NumericalMethods {
             double Xn_1 = out[out.length-1];
             double Xn_2 = out[out.length-2];
             // Secant method formula
-            double Xn = Xn_1 - f.computeY(Xn_1) * (Xn_1 - Xn_2) / (f.computeY(Xn_1) - f.computeY(Xn_2));
+            double Xn = computeSecant(f, Xn_1, Xn_2);
             double[] out_copy = out.clone();
             out = new double[out.length + 1];
             System.arraycopy(out_copy, 0, out, 0, out_copy.length);
@@ -62,6 +69,13 @@ public class NumericalMethods {
             if(Math.abs(Xn - Xn_1) <= precision) break;
         }
         return out;
+    }
+    
+    /**
+     * Secant method formula
+     */
+    private double computeSecant(Function f, double Xn_1, double Xn_2) {
+        return Xn_1 - f.computeY(Xn_1) * (Xn_1 - Xn_2) / (f.computeY(Xn_1) - f.computeY(Xn_2));
     }
     
     /**
@@ -87,7 +101,7 @@ public class NumericalMethods {
         // If f(a) and f(b) are of opposite sign, carry on with the bisection method, else throw exception
         if((f.computeY(a) > 0 && f.computeY(b) < 0) || (f.computeY(a) < 0 && f.computeY(b) > 0)) {        
             while(true) {
-                double c = (a + b) / 2;
+                double c = computeBisection(a, b);
 
                 double Fa = f.computeY(a);
                 double Fc = f.computeY(c);
@@ -109,5 +123,12 @@ public class NumericalMethods {
         } else {
             throw new Exception("f(x0) and f(x1) must be of opposite sign");
         }
+    }
+    
+    /**
+     * Method to find the middle point for bisection
+     */
+    private double computeBisection(double a, double b) {
+        return (a + b) / 2;
     }
 }
