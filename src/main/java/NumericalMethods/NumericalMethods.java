@@ -59,7 +59,7 @@ public class NumericalMethods {
             out = new double[out.length + 1];
             System.arraycopy(out_copy, 0, out, 0, out_copy.length);
             out[out.length - 1] = Xn;
-            if(Math.abs(Xn - Xn_1) < precision) break;
+            if(Math.abs(Xn - Xn_1) <= precision) break;
         }
         return out;
     }
@@ -99,10 +99,10 @@ public class NumericalMethods {
 
                 if((Fc < 0 && Fa > 0) || (Fc > 0 && Fa < 0)) {
                     b = c;
-                    if(Math.abs(c - a) < precision) break;
+                    if(Math.abs(c - a) <= precision) break;
                 } else {
                     a = c;
-                    if(Math.abs(c - b) < precision) break;
+                    if(Math.abs(c - b) <= precision) break;
                 }
             }
             return out;
