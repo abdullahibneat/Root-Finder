@@ -146,6 +146,8 @@ public class RootFinderMain {
                             for (int i = 0; i < nr_array.length; i++) {
                                 gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", nr_array[i]) });
                             }
+                            // Show the last root on the graph
+                            gui.addSeries("Newton-Raphson", nr.getLastElement(), currentFunction.computeY(nr.getLastElement()));
                             break;
                         case "secant":
                             // Secant method implementatin
@@ -154,6 +156,8 @@ public class RootFinderMain {
                             for (int i = 0; i < secant.length; i++) {
                                 gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", secant[i]) });
                             }
+                            // Show the last root on the graph
+                            gui.addSeries("Secant", secant[secant.length - 1], currentFunction.computeY(secant[secant.length - 1]));
                             break;
                         case "bisection":
                             // Try/catch because bisection requires f(x0) and f(x1) to be of opposite sign.
@@ -164,6 +168,8 @@ public class RootFinderMain {
                                 for (int i = 0; i < bisection.length; i++) {
                                     gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", bisection[i]) });
                                 }
+                                // Show the last root on the graph
+                                gui.addSeries("Bisection", bisection[bisection.length - 1], currentFunction.computeY(bisection[bisection.length - 1]));
                             } catch(Exception ex) {
                                 gui.addTableRow(new String[] {"Failed:", "Bisection method"});
                                 gui.warning(ex.getMessage());

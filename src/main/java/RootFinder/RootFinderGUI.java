@@ -204,10 +204,22 @@ public class RootFinderGUI extends JFrame {
      */
     public void initializeTable() {
         tableData.setRowCount(0);
+        
+        // Remove any roots displayed on the chart
+        String toRemove = "";
+        for(String s: chart.getSeriesMap().keySet()) {
+            if(!s.equals("f(x)")) toRemove += s + ",";
+        }
+        // Using a separate for loop to avoid java.util.concurrentmodificationexception
+        for(String s: toRemove.split(",")) {
+            chart.removeSeries(s);
+        }
+        
+        chartPanel.repaint();
     }
     
     /**
-     * Method to initialise the right panel.
+     * Method to initialise the right panel.it
      * 
      * The right panel contains the XChart plot to display the function to the user.
      * 
@@ -215,6 +227,9 @@ public class RootFinderGUI extends JFrame {
      */
     private JComponent rightPanel() {
         JPanel rightPanel = new JPanel(new BorderLayout());
+        
+        // Enable legend
+        chart.getStyler().setLegendVisible(true);
         
         // Enable zooming in into the graph
         SelectionZoom sz = new SelectionZoom();
@@ -278,6 +293,20 @@ public class RootFinderGUI extends JFrame {
      */
     public void warning(String message) {
         JOptionPane.showMessageDialog(this, message);
+    }
+    
+    /**
+     * Method to add a single point to the chart given its x and y coordinate.
+     * 
+     * @param name Name of the series
+     * @param x x-coordinate
+     * @param y y-coordinate
+     */
+    public void addSeries(String name, double x, double y) {
+        if(!chart.getSeriesMap().keySet().contains(name)) {
+            chart.addSeries(name, new double[] {x}, new double[] {y});
+            chartPanel.repaint();
+        }
     }
     
 }
