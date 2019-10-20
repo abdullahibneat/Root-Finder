@@ -179,13 +179,15 @@ public class RootFinderMain {
                             // Try/catch because false position requires f(x0) and f(x1) to be of opposite sign.
                             try {
                                 // Bisection method implementatin
-                                double[] falsePosition = numericalMethods.falsePosition(currentFunction, x0, x1, precision);
+                                LinkedList falsePosition = numericalMethods.falsePosition(currentFunction, x0, x1, precision);                                
+                                // Convert LinkedList to array so I can iterate
+                                double[] fs_array = falsePosition.toDoubleArray();
                                 gui.addTableRow(new String[] {"False Position", "method"});
-                                for (int i = 0; i < falsePosition.length; i++) {
-                                    gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", falsePosition[i]) });
+                                for (int i = 0; i < fs_array.length; i++) {
+                                    gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", fs_array[i]) });
                                 }
                                 // Show the last root on the graph
-                                gui.addSeries("False Position", falsePosition[falsePosition.length - 1], currentFunction.computeY(falsePosition[falsePosition.length - 1]));
+                                gui.addSeries("False Position", fs_array[fs_array.length - 1], currentFunction.computeY(fs_array[fs_array.length - 1]));
                             } catch(Exception ex) {
                                 gui.addTableRow(new String[] {"Failed:", "False position method"});
                                 gui.warning(ex.getMessage());

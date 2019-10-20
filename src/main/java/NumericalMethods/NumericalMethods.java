@@ -50,7 +50,7 @@ public class NumericalMethods {
      * @param x1  Second starting point
      * @param precision Degree of accuracy for this method to stop
      * 
-     * @return LinkedList containing the iterations of the x0 value.
+     * @return Array of double containing the iterations of the x0 value.
      */
     public double[] secant(Function f, double x0, double x1, double precision) {
         // Function must use Array
@@ -62,10 +62,14 @@ public class NumericalMethods {
             double Xn_2 = out[out.length-2];
             // Secant method formula
             double Xn = computeSecant(f, Xn_1, Xn_2);
+            
+            // Create a new array 1 size bigger than the previous one
+            // so I can add the new x value to the end
             double[] out_copy = out.clone();
             out = new double[out.length + 1];
             System.arraycopy(out_copy, 0, out, 0, out_copy.length);
             out[out.length - 1] = Xn;
+            
             if(Math.abs(Xn - Xn_1) <= precision) break;
         }
         return out;
@@ -86,7 +90,7 @@ public class NumericalMethods {
      * @param x1  Second starting point
      * @param precision Degree of accuracy for this method to stop
      * 
-     * @return LinkedList containing the iterations of the x0 value.
+     * @return Array of double containing the iterations of the x0 value.
      * @throws java.lang.Exception Bisection requires f(x0) and f(x1) to be of opposite sign. Throws error if this condition is not fulfilled.
      */
     public double[] bisection(Function f, double x0, double x1, double precision) throws Exception{
@@ -105,7 +109,9 @@ public class NumericalMethods {
 
                 double Fa = f.computeY(a);
                 double Fc = f.computeY(c);
-
+            
+                // Create a new array 1 size bigger than the previous one
+                // so I can add the new x value to the end
                 double[] out_copy = out.clone();
                 out = new double[out.length + 1];
                 System.arraycopy(out_copy, 0, out, 0, out_copy.length);
@@ -146,14 +152,16 @@ public class NumericalMethods {
      * @return LinkedList containing the iterations of the x0 value.
      * @throws java.lang.Exception Bisection requires f(x0) and f(x1) to be of opposite sign. Throws error if this condition is not fulfilled.
      */
-    public double[] falsePosition(Function f, double x0, double x1, double precision) throws Exception{
+    public LinkedList falsePosition(Function f, double x0, double x1, double precision) throws Exception{
         // Function must use Array
-        f.useArray(true);
+        f.useArray(false);
         
-        double[] out = {x0, x1};
+        LinkedList out = new LinkedList();
+        out.add(x0);
+        out.add(x1);
         
-        double a = out[out.length-1];
-        double b = out[out.length-2];
+        double a = x0;
+        double b = x1;
         
         // If f(a) and f(b) are of opposite sign, carry on with the bisection method, else throw exception
         if((f.computeY(a) > 0 && f.computeY(b) < 0) || (f.computeY(a) < 0 && f.computeY(b) > 0)) {        
@@ -163,10 +171,7 @@ public class NumericalMethods {
                 double Fa = f.computeY(a);
                 double Fc = f.computeY(c);
 
-                double[] out_copy = out.clone();
-                out = new double[out.length + 1];
-                System.arraycopy(out_copy, 0, out, 0, out_copy.length);
-                out[out.length - 1] = c;
+                out.add(c);
                 
                 // Stop if f(c) is very close to 0
                 if(Fc < precision) break;
