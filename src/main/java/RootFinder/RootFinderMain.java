@@ -126,6 +126,11 @@ public class RootFinderMain {
                 // Check precision
                 try {
                     precision = Double.parseDouble(gui.precision.getText());
+                    // Precision must be between 0 and 1 (e.g. 0.001)
+                    if(!(precision > 0 && precision < 1)) {
+                        gui.warning("Precision must be between 0 and 1");
+                        break;
+                    }
                 } catch(NumberFormatException nfe) {
                     gui.warning("Ensure precision is a valid number");
                     break;
