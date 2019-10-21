@@ -103,7 +103,7 @@ public class NumericalMethods {
         double b = out[out.length-2];
         
         // If f(a) and f(b) are of opposite sign, carry on with the bisection method, else throw exception
-        if((f.computeY(a) > 0 && f.computeY(b) < 0) || (f.computeY(a) < 0 && f.computeY(b) > 0)) {        
+        if(f.computeY(a) * f.computeY(b) < 0) {        
             while(true) {
                 double c = computeBisection(a, b);
 
@@ -117,7 +117,7 @@ public class NumericalMethods {
                 System.arraycopy(out_copy, 0, out, 0, out_copy.length);
                 out[out.length - 1] = c;
 
-                if((Fc < 0 && Fa > 0) || (Fc > 0 && Fa < 0)) {
+                if(Fc * Fa < 0) {
                     b = c;
                     if(Math.abs(c - a) <= precision) break;
                 } else {
@@ -164,7 +164,7 @@ public class NumericalMethods {
         double b = x1;
         
         // If f(a) and f(b) are of opposite sign, carry on with the bisection method, else throw exception
-        if((f.computeY(a) > 0 && f.computeY(b) < 0) || (f.computeY(a) < 0 && f.computeY(b) > 0)) {        
+        if(f.computeY(a) * f.computeY(b) < 0) {        
             while(true) {
                 double c = computeSecant(f, a, b);
 
@@ -174,9 +174,9 @@ public class NumericalMethods {
                 out.add(c);
                 
                 // Stop if f(c) is very close to 0
-                if(Fc < precision) break;
+                if(Fc < 0.000001) break;
 
-                if((Fc < 0 && Fa > 0) || (Fc > 0 && Fa < 0)) {
+                if(Fc * Fa < 0) {
                     b = c;
                     if(Math.abs(c - a) <= precision) break;
                 } else {
