@@ -109,7 +109,9 @@ public class NumericalMethods {
 
                 double Fa = f.computeY(a);
                 double Fc = f.computeY(c);
-            
+                
+                double last = out[out.length - 1]; // Keep track of the previous c
+                
                 // Create a new array 1 size bigger than the previous one
                 // so I can add the new x value to the end
                 double[] out_copy = out.clone();
@@ -117,13 +119,9 @@ public class NumericalMethods {
                 System.arraycopy(out_copy, 0, out, 0, out_copy.length);
                 out[out.length - 1] = c;
 
-                if(Fc * Fa < 0) {
-                    b = c;
-                    if(Math.abs(c - a) <= precision) break;
-                } else {
-                    a = c;
-                    if(Math.abs(c - b) <= precision) break;
-                }
+                if(Math.abs(c - last) <= precision) break; // Stop if difference between this c and previous c is <= precision
+                
+                if(Fc * Fa < 0) b = c; else  a = c;
             }
             return out;
         } else {
@@ -171,18 +169,12 @@ public class NumericalMethods {
                 double Fa = f.computeY(a);
                 double Fc = f.computeY(c);
 
+                double last = out.getLastElement(); // Keep track of the previous c
                 out.add(c);
-                
-                // Stop if f(c) is very close to 0
-                if(Fc < 0.000001) break;
 
-                if(Fc * Fa < 0) {
-                    b = c;
-                    if(Math.abs(c - a) <= precision) break;
-                } else {
-                    a = c;
-                    if(Math.abs(c - b) <= precision) break;
-                }
+                if(Math.abs(c - last) <= precision) break; // Stop if difference between this c and previous c is <= precision
+                
+                if(Fc * Fa < 0) b = c; else  a = c;
             }
             return out;
         } else {
