@@ -141,28 +141,38 @@ public class RootFinderMain {
                 for(String method: gui.getSelectedMethods()) {
                     switch(method) {
                         case "newtonRaphson":
-                            // Newton Raphson implementation
-                            gui.addTableRow(new String[] {"Newton Raphson", "method"});
-                            LinkedList nr = numericalMethods.newtonRaphson(currentFunction, x0, precision);
-                            // Convert LinkedList to array so I can iterate
-                            double[] nr_array = nr.toDoubleArray();
-                            
-                            // Add values to table
-                            for (int i = 0; i < nr_array.length; i++) {
-                                gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", nr_array[i]) });
+                            try {
+                                // Newton Raphson implementation
+                                gui.addTableRow(new String[] {"Newton Raphson", "method"});
+                                LinkedList nr = numericalMethods.newtonRaphson(currentFunction, x0, precision);
+                                // Convert LinkedList to array so I can iterate
+                                double[] nr_array = nr.toDoubleArray();
+
+                                // Add values to table
+                                for (int i = 0; i < nr_array.length; i++) {
+                                    gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", nr_array[i]) });
+                                }
+                                // Show the last root on the graph
+                                gui.addSeries("Newton-Raphson", nr.getLastElement(), currentFunction.computeY(nr.getLastElement()));
+                            } catch(ArithmeticException ex) {
+                                gui.addTableRow(new String[] {"Failed:", "Newton-Raphson method"});
+                                gui.warning(ex.getMessage());
                             }
-                            // Show the last root on the graph
-                            gui.addSeries("Newton-Raphson", nr.getLastElement(), currentFunction.computeY(nr.getLastElement()));
                             break;
                         case "secant":
-                            // Secant method implementatin
-                            gui.addTableRow(new String[] {"Secant", "method"});
-                            double[] secant = numericalMethods.secant(currentFunction, x0, x1, precision);
-                            for (int i = 0; i < secant.length; i++) {
-                                gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", secant[i]) });
+                            try {
+                                // Secant method implementatin
+                                gui.addTableRow(new String[] {"Secant", "method"});
+                                double[] secant = numericalMethods.secant(currentFunction, x0, x1, precision);
+                                for (int i = 0; i < secant.length; i++) {
+                                    gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", secant[i]) });
+                                }
+                                // Show the last root on the graph
+                                gui.addSeries("Secant", secant[secant.length - 1], currentFunction.computeY(secant[secant.length - 1]));
+                            } catch(ArithmeticException ex) {
+                                gui.addTableRow(new String[] {"Failed:", "Secant method"});
+                                gui.warning(ex.getMessage());
                             }
-                            // Show the last root on the graph
-                            gui.addSeries("Secant", secant[secant.length - 1], currentFunction.computeY(secant[secant.length - 1]));
                             break;
                         case "bisection":
                             // Try/catch because bisection requires f(x0) and f(x1) to be of opposite sign.

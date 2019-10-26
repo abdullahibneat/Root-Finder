@@ -18,8 +18,9 @@ public class NumericalMethods {
      * @param precision Degree of accuracy for this method to stop
      * 
      * @return LinkedList containing the iterations of the x0 value.
+     * @throws ArithmeticException If x0 is a turning point trow exception
      */
-    public LinkedList newtonRaphson(Function f, double x0, double precision) {
+    public LinkedList newtonRaphson(Function f, double x0, double precision) throws ArithmeticException {
         // Function must use LinkedList
         f.useArray(false);
         
@@ -37,9 +38,13 @@ public class NumericalMethods {
     
     /**
      * Newton-Raphson formula
+     * 
+     * Throw exception if attempting to divide by zero
      */
-    private double computeNewtonRaphson(Function f, double x) {
-        return x - (f.computeY(x) / f.computeYderivative(x));
+    private double computeNewtonRaphson(Function f, double x) throws ArithmeticException{
+        double out = x - (f.computeY(x) / f.computeYderivative(x));
+        if(Double.isNaN(out)) throw new ArithmeticException("Cannout use turning point as starting point.");
+        return out;
     }
     
     /**
@@ -51,8 +56,9 @@ public class NumericalMethods {
      * @param precision Degree of accuracy for this method to stop
      * 
      * @return Array of double containing the iterations of the x0 value.
+     * @throws ArithmeticException if starting points are the roots.
      */
-    public double[] secant(Function f, double x0, double x1, double precision) {
+    public double[] secant(Function f, double x0, double x1, double precision) throws ArithmeticException {
         // Function must use Array
         f.useArray(true);
         
@@ -77,9 +83,13 @@ public class NumericalMethods {
     
     /**
      * Secant method formula
+     * 
+     * Throw exception if attempting to divide by zero
      */
-    private double computeSecant(Function f, double Xn_1, double Xn_2) {
-        return Xn_1 - f.computeY(Xn_1) * (Xn_1 - Xn_2) / (f.computeY(Xn_1) - f.computeY(Xn_2));
+    private double computeSecant(Function f, double Xn_1, double Xn_2) throws ArithmeticException {
+        double out = Xn_1 - f.computeY(Xn_1) * (Xn_1 - Xn_2) / (f.computeY(Xn_1) - f.computeY(Xn_2));
+        if(Double.isNaN(out)) throw new ArithmeticException("The starting point cannot be the root.");
+        return out;
     }
     
     /**
