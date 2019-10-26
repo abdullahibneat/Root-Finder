@@ -185,7 +185,7 @@ public class RootFinderMain {
                                 }
                                 // Show the last root on the graph
                                 gui.addSeries("Bisection", bisection[bisection.length - 1], currentFunction.computeY(bisection[bisection.length - 1]));
-                            } catch(Exception ex) {
+                            } catch(ArithmeticException ex) {
                                 gui.addTableRow(new String[] {"Failed:", "Bisection method"});
                                 gui.warning(ex.getMessage());
                             }
@@ -203,7 +203,7 @@ public class RootFinderMain {
                                 }
                                 // Show the last root on the graph
                                 gui.addSeries("False Position", fs_array[fs_array.length - 1], currentFunction.computeY(fs_array[fs_array.length - 1]));
-                            } catch(Exception ex) {
+                            } catch(ArithmeticException ex) {
                                 gui.addTableRow(new String[] {"Failed:", "False position method"});
                                 gui.warning(ex.getMessage());
                             }

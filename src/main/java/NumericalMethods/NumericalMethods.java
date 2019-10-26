@@ -101,9 +101,9 @@ public class NumericalMethods {
      * @param precision Degree of accuracy for this method to stop
      * 
      * @return Array of double containing the iterations of the x0 value.
-     * @throws java.lang.Exception Bisection requires f(x0) and f(x1) to be of opposite sign. Throws error if this condition is not fulfilled.
+     * @throws ArithmeticException Bisection requires f(x0) and f(x1) to be of opposite sign. Throws error if this condition is not fulfilled.
      */
-    public double[] bisection(Function f, double x0, double x1, double precision) throws Exception{
+    public double[] bisection(Function f, double x0, double x1, double precision) throws ArithmeticException{
         // Function must use Array
         f.useArray(true);
         
@@ -135,7 +135,7 @@ public class NumericalMethods {
             }
             return out;
         } else {
-            throw new Exception("f(x0) and f(x1) must be of opposite sign");
+            throw new ArithmeticException("f(x0) and f(x1) must be of opposite sign");
         }
     }
     
@@ -158,9 +158,9 @@ public class NumericalMethods {
      * @param precision Degree of accuracy for this method to stop
      * 
      * @return LinkedList containing the iterations of the x0 value.
-     * @throws java.lang.Exception Bisection requires f(x0) and f(x1) to be of opposite sign. Throws error if this condition is not fulfilled.
+     * @throws ArithmeticException Bisection requires f(x0) and f(x1) to be of opposite sign. Throws error if this condition is not fulfilled.
      */
-    public LinkedList falsePosition(Function f, double x0, double x1, double precision) throws Exception{
+    public LinkedList falsePosition(Function f, double x0, double x1, double precision) throws ArithmeticException{
         // Function must use Array
         f.useArray(false);
         
@@ -188,7 +188,7 @@ public class NumericalMethods {
             }
             return out;
         } else {
-            throw new Exception("f(x0) and f(x1) must be of opposite sign");
+            throw new ArithmeticException("f(x0) and f(x1) must be of opposite sign");
         }
     }
 }
