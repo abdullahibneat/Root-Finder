@@ -42,8 +42,10 @@ public class NumericalMethods {
      * Throw exception if attempting to divide by zero
      */
     private double computeNewtonRaphson(Function f, double x) throws ArithmeticException{
-        double out = x - (f.computeY(x) / f.computeYderivative(x));
-        if(Double.isNaN(out)) throw new ArithmeticException("Cannout use turning point as starting point.");
+        double derivative = f.computeYderivative(x);
+        if(derivative == 0) throw new ArithmeticException("Cannout use turning point as starting point.");
+        double out = x - (f.computeY(x) / derivative);
+        if(Double.isNaN(out)) throw new ArithmeticException("Error: use a different starting point.");
         return out;
     }
     
