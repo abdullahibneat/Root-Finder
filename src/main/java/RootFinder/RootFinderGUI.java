@@ -39,7 +39,13 @@ public class RootFinderGUI extends JFrame {
     
     private final JTabbedPane leftPanel = new JTabbedPane(JTabbedPane.TOP); // Tabbed panel
     private final DefaultTableModel tableData = new DefaultTableModel();
-    private final JTable table = new JTable(tableData);
+    private final JTable table = new JTable(tableData) {
+        // Disable cell editing
+        @Override
+        public boolean isCellEditable(int row, int column) {                
+                return false;               
+        };
+    };
     
     private Function function;
     private final XYChart chart; // Function plot
