@@ -89,8 +89,10 @@ public class NumericalMethods {
      * Throw exception if attempting to divide by zero
      */
     private double computeSecant(Function f, double Xn_1, double Xn_2) throws ArithmeticException {
-        double out = Xn_1 - f.computeY(Xn_1) * (Xn_1 - Xn_2) / (f.computeY(Xn_1) - f.computeY(Xn_2));
-        if(Double.isNaN(out)) throw new ArithmeticException("The starting point cannot be the root.");
+        double denominator = f.computeY(Xn_1) - f.computeY(Xn_2);
+        if(denominator == 0) throw new ArithmeticException("The starting points cannot be the same or the actual roots.");
+        double out = Xn_1 - f.computeY(Xn_1) * (Xn_1 - Xn_2) / (denominator);
+        if(Double.isNaN(out)) throw new ArithmeticException("Error: use a different starting point.");
         return out;
     }
     
