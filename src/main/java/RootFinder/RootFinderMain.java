@@ -24,7 +24,7 @@ public class RootFinderMain {
     private Function currentFunction = new Quadratic(false); // Function selected by the user
     
     // Numerical methods
-    private NumericalMethods numericalMethods = new NumericalMethods();
+    private final NumericalMethods numericalMethods = new NumericalMethods();
     
     // GUI
     private final RootFinderGUI gui;
