@@ -209,9 +209,15 @@ public class RootFinderGUI extends JFrame {
      * Method to empty the table
      */
     public void initializeTable() {
-        tableData.setRowCount(0);
-        
-        // Remove any roots displayed on the chart
+        tableData.setRowCount(0);  
+        removeRootsFromGraph();
+        chartPanel.repaint();
+    }
+    
+    /**
+     * Method to remove any roots displayed on the chart
+     */
+    public void removeRootsFromGraph() {
         String toRemove = "";
         for(String s: chart.getSeriesMap().keySet()) {
             if(!s.equals("f(x)")) toRemove += s + ",";
@@ -220,8 +226,6 @@ public class RootFinderGUI extends JFrame {
         for(String s: toRemove.split(",")) {
             chart.removeSeries(s);
         }
-        
-        chartPanel.repaint();
     }
     
     /**

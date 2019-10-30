@@ -46,6 +46,9 @@ public class RootFinderMain {
         
         // Update the chart when user changes function using dropdown menu
         gui.functionsDropdown.addActionListener(e -> {
+            // Remove any displayed roots from previous numerical methods
+            gui.removeRootsFromGraph();
+            
             selectedFunction = functionsAvailableTags[gui.functionsDropdown.getSelectedIndex()];
             switch (selectedFunction) {
                 case "quadratic":
