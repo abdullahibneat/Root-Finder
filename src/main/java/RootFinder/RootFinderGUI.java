@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -39,13 +40,7 @@ public class RootFinderGUI extends JFrame {
     
     private final JTabbedPane leftPanel = new JTabbedPane(JTabbedPane.TOP); // Tabbed panel
     private final DefaultTableModel tableData = new DefaultTableModel();
-    private final JTable table = new JTable(tableData) {
-        // Disable cell editing
-        @Override
-        public boolean isCellEditable(int row, int column) {                
-                return false;               
-        };
-    };
+    private final JTable table = new JTable(tableData);
     
     private Function function;
     private final XYChart chart; // Function plot
@@ -190,6 +185,12 @@ public class RootFinderGUI extends JFrame {
     private JComponent tabularData() {
         JPanel container = new JPanel();
         container.setLayout(new BorderLayout());
+        
+        // Allow user to select text from table cell
+        JTextField tf = new JTextField();
+        tf.setEditable(false);
+        DefaultCellEditor editor = new DefaultCellEditor(tf);
+        table.setDefaultEditor(Object.class, editor);
         
         // If the table has many rows, show a vertical scrollbar
         JScrollPane sp = new JScrollPane(table);
