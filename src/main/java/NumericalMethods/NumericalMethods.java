@@ -169,7 +169,7 @@ public class NumericalMethods {
      * @throws ArithmeticException Bisection requires f(x0) and f(x1) to be of opposite sign. Throws error if this condition is not fulfilled.
      */
     public LinkedList falsePosition(Function f, double x0, double x1, double precision) throws ArithmeticException{
-        // Function must use Array
+        // Function must use LinkedList
         f.useArray(false);
         
         LinkedList out = new LinkedList();
