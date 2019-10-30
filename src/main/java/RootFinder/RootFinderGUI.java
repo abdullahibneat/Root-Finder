@@ -197,8 +197,9 @@ public class RootFinderGUI extends JFrame {
         sp.setPreferredSize(container.getSize());
         
         // Set column names
-        tableData.addColumn("Iteration (i)");
-        tableData.addColumn("Xi");
+        tableData.addColumn("Step");
+        tableData.addColumn("x");
+        tableData.addColumn("F(x)");
         initializeTable();
         
         container.add(sp, BorderLayout.CENTER);

@@ -176,34 +176,34 @@ public class RootFinderMain {
                     case "newtonRaphson":
                         try {
                             // Newton Raphson implementation
-                            gui.addTableRow(new String[] {"Newton Raphson", "method"});
+                            gui.addTableRow(new String[] {"Newton Raphson method"});
                             LinkedList nr = numericalMethods.newtonRaphson(currentFunction, x0, precision);
                             // Convert LinkedList to array so I can iterate
                             double[] nr_array = nr.toDoubleArray();
 
                             // Add values to table
                             for (int i = 0; i < nr_array.length; i++) {
-                                gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", nr_array[i]) });
+                                gui.addTableRow(new String[] { Integer.toString(i), Double.toString(nr_array[i]), Double.toString(currentFunction.computeY(nr_array[i])) });
                             }
                             // Show the last root on the graph
                             gui.addSeries("Newton-Raphson", nr.getLastElement(), currentFunction.computeY(nr.getLastElement()));
                         } catch(ArithmeticException ex) {
-                            gui.addTableRow(new String[] {"Failed:", "Newton-Raphson method"});
+                            gui.addTableRow(new String[] {"Failed: Newton-Raphson method"});
                             gui.warning(ex.getMessage());
                         }
                         break;
                     case "secant":
                         try {
                             // Secant method implementatin
-                            gui.addTableRow(new String[] {"Secant", "method"});
+                            gui.addTableRow(new String[] {"Secant method"});
                             double[] secant = numericalMethods.secant(currentFunction, x0, x1, precision);
                             for (int i = 0; i < secant.length; i++) {
-                                gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", secant[i]) });
+                                gui.addTableRow(new String[] { Integer.toString(i), Double.toString(secant[i]), Double.toString(currentFunction.computeY(secant[i])) });
                             }
                             // Show the last root on the graph
                             gui.addSeries("Secant", secant[secant.length - 1], currentFunction.computeY(secant[secant.length - 1]));
                         } catch(ArithmeticException ex) {
-                            gui.addTableRow(new String[] {"Failed:", "Secant method"});
+                            gui.addTableRow(new String[] {"Failed: Secant method"});
                             gui.warning(ex.getMessage());
                         }
                         break;
@@ -212,14 +212,14 @@ public class RootFinderMain {
                         try {
                             // Bisection method implementatin
                             double[] bisection = numericalMethods.bisection(currentFunction, x0, x1, precision);
-                            gui.addTableRow(new String[] {"Bisection", "method"});
+                            gui.addTableRow(new String[] {"Bisection method"});
                             for (int i = 0; i < bisection.length; i++) {
-                                gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", bisection[i]) });
+                                gui.addTableRow(new String[] { Integer.toString(i), Double.toString(bisection[i]), Double.toString(currentFunction.computeY(bisection[i])) });
                             }
                             // Show the last root on the graph
                             gui.addSeries("Bisection", bisection[bisection.length - 1], currentFunction.computeY(bisection[bisection.length - 1]));
                         } catch(ArithmeticException ex) {
-                            gui.addTableRow(new String[] {"Failed:", "Bisection method"});
+                            gui.addTableRow(new String[] {"Failed: Bisection method"});
                             gui.warning(ex.getMessage());
                         }
                         break;
@@ -230,14 +230,14 @@ public class RootFinderMain {
                             LinkedList falsePosition = numericalMethods.falsePosition(currentFunction, x0, x1, precision);                                
                             // Convert LinkedList to array so I can iterate
                             double[] fs_array = falsePosition.toDoubleArray();
-                            gui.addTableRow(new String[] {"False Position", "method"});
+                            gui.addTableRow(new String[] {"False Position method"});
                             for (int i = 0; i < fs_array.length; i++) {
-                                gui.addTableRow(new String[] { Integer.toString(i), String.format("%.10f", fs_array[i]) });
+                                gui.addTableRow(new String[] { Integer.toString(i), Double.toString(fs_array[i]), Double.toString(currentFunction.computeY(fs_array[i])) });
                             }
                             // Show the last root on the graph
                             gui.addSeries("False Position", fs_array[fs_array.length - 1], currentFunction.computeY(fs_array[fs_array.length - 1]));
                         } catch(ArithmeticException ex) {
-                            gui.addTableRow(new String[] {"Failed:", "False position method"});
+                            gui.addTableRow(new String[] {"Failed: False position method"});
                             gui.warning(ex.getMessage());
                         }
                         break;
