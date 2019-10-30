@@ -6,8 +6,8 @@ package LinkedList;
  * @author Abdullah
  */
 public class LinkedList {
+    
     private final DoubleNode head;
-    private DoubleNode last;
     private DoubleNode tail; // Keep track of the tail
 
     /**
@@ -32,15 +32,15 @@ public class LinkedList {
     public void add(double e) {
         
         // Create the node
-        last = new DoubleNode(e, null);
+        DoubleNode n = new DoubleNode(e, null);
         
         // If this is the first element
         if(head.getNext() == null) {
-            tail = last;
+            tail = n;
             head.setNext(tail);
         } else {
-            tail.setNext(last);
-            tail = tail.getNext();
+            tail.setNext(n);
+            tail = n;
         }
         
         // Increase length of the list by 1
@@ -53,7 +53,7 @@ public class LinkedList {
      * @return Last element
      */
     public double getLastElement() {
-        return last.getElement();
+        return tail.getElement();
     }
     
     /**
