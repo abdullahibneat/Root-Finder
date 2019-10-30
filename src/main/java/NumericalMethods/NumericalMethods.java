@@ -105,7 +105,7 @@ public class NumericalMethods {
      * @param precision Degree of accuracy for this method to stop
      * 
      * @return Array of double containing the iterations of the x0 value.
-     * @throws ArithmeticException Bisection requires f(x0) and f(x1) to be of opposite sign. Throws error if this condition is not fulfilled.
+     * @throws ArithmeticException Bisection requires f(x0) and f(x1) to be real and of opposite sign. Throws error if these conditions are not fulfilled.
      */
     public double[] bisection(Function f, double x0, double x1, double precision) throws ArithmeticException{
         // Function must use Array
@@ -138,6 +138,8 @@ public class NumericalMethods {
                 if(Fc * Fa < 0) b = c; else  a = c;
             }
             return out;
+        } else if(Double.isNaN(f.computeY(a) * f.computeY(b))) { // f(x) is undefined e.g. not a real number
+            throw new ArithmeticException("Error: use a different starting point.");
         } else {
             throw new ArithmeticException("f(x0) and f(x1) must be of opposite sign");
         }
@@ -146,8 +148,10 @@ public class NumericalMethods {
     /**
      * Method to find the middle point for bisection
      */
-    private double computeBisection(double a, double b) {
-        return (a + b) / 2;
+    private double computeBisection(double a, double b) throws ArithmeticException {
+        double out = (a+b) / 2;
+        if(Double.isNaN(out)) throw new ArithmeticException("Error: use a different starting point.");
+        return out;
     }
     
     /**
