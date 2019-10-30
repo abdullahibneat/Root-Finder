@@ -114,21 +114,13 @@ public abstract class Function {
      * @return Array of all x values
      */
     public double[] getX() {
-        if(useArray) {
-            return x_array;
-        } else {
-            return x_list.toDoubleArray();
-        }
+        return useArray ? x_array : x_list.toDoubleArray();
     }
     
     /**
      * @return Array of y values
      */
     public double[] getY() {
-        if(useArray) {
-            return y_array;
-        } else {
-            return y_list.toDoubleArray();
-        }
+        return useArray ? y_array : y_list.toDoubleArray();
     }
 }
