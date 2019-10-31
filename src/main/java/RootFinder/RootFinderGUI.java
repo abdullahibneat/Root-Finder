@@ -201,7 +201,7 @@ public class RootFinderGUI extends JFrame {
         tableData.addColumn("x");
         tableData.addColumn("F(x)");
         // Set the first column to be of fixed witdth
-        table.getColumnModel().getColumn(0).setMaxWidth(5);
+        table.getColumnModel().getColumn(0).setMaxWidth(25);
         
         initializeTable();
         
