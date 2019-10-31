@@ -166,7 +166,7 @@ public class NumericalMethods {
      * @param precision Degree of accuracy for this method to stop
      * 
      * @return LinkedList containing the iterations of the x0 value.
-     * @throws ArithmeticException Bisection requires f(x0) and f(x1) to be of opposite sign. Throws error if this condition is not fulfilled.
+     * @throws ArithmeticException False Position requires f(x0) and f(x1) to be of opposite sign. Throws error if this condition is not fulfilled.
      */
     public LinkedList falsePosition(Function f, double x0, double x1, double precision) throws ArithmeticException{
         // Function must use LinkedList
@@ -179,7 +179,7 @@ public class NumericalMethods {
         double a = x0;
         double b = x1;
         
-        // If f(a) and f(b) are of opposite sign, carry on with the bisection method, else throw exception
+        // If f(a) and f(b) are of opposite sign, carry on with the false position method, else throw exception
         if(f.computeY(a) * f.computeY(b) < 0) {        
             while(true) {
                 double c = computeSecant(f, a, b);
