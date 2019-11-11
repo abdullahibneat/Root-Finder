@@ -46,7 +46,8 @@ public class Logarithm extends Function {
      */
     @Override
     public double computeY(double x) {
-        return Math.log(x + 1) + 1;
+        double out = Math.log(x + 1) + 1;
+        return Double.isInfinite(out) ? Double.NaN : out;
     }
     
     /**
