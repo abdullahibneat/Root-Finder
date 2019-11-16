@@ -1,5 +1,7 @@
 package RootFinder.Functions;
 
+import java.math.BigDecimal;
+
 /**
  * Implementation of the function f(x) = x - x^2
  *
@@ -46,7 +48,9 @@ public class Quadratic extends Function {
      */
     @Override
     public double computeY(double x) {
-        return x - Math.pow(x, 2);
+        BigDecimal out = BigDecimal.valueOf(x); // Use BigDecimal because some value are not correcly calculated (e.g. f(0.7) = 0.21000000000000002)
+        out = out.subtract(out.multiply(out)); // x - x * x
+        return out.doubleValue();
     }
     
     /**

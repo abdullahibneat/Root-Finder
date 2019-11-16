@@ -90,7 +90,7 @@ public class NumericalMethods {
      */
     private double computeSecant(Function f, double Xn_1, double Xn_2) throws ArithmeticException {
         double denominator = f.computeY(Xn_1) - f.computeY(Xn_2);
-        if(denominator == 0) throw new ArithmeticException("The starting points cannot be the same or the actual roots.");
+        if(denominator == 0) throw new ArithmeticException("f(x) for the two input values must not be the same.");
         double out = Xn_1 - f.computeY(Xn_1) * (Xn_1 - Xn_2) / (denominator);
         if(Double.isNaN(out)) throw new ArithmeticException("Error: use a different starting point.");
         return out;
