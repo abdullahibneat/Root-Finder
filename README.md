@@ -1,4 +1,7 @@
 # Root Finder
+
+![Screenshot of Root Finder](https://i.imgur.com/dEicvVD.png)
+
 The purpose of this assignment is to implement some of these methods and 
 demonstrate their use in a Java application. The Java application should 
 provide the following functionality through a GUI:
